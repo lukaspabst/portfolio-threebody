@@ -14,6 +14,7 @@ import {
   ZenTimelineCard,
   ZenAudioController,
   ZenIcon,
+  ZenModal,
   useZenAudioSynth,
   type ZenDossierItem,
 } from '@zen-ui/system';
@@ -31,6 +32,7 @@ export default function App() {
   const [locale, setLocale] = useState<Locale>('en');
   const [workFilter, setWorkFilter] = useState<WorkFilter>('all');
   const [activeWorkId, setActiveWorkId] = useState<string>(ATELIER_WORKS[0].id);
+  const [imprintOpen, setImprintOpen] = useState<boolean>(false);
 
   const synth = useZenAudioSynth();
 
@@ -584,7 +586,131 @@ export default function App() {
             </div>
           </ZenCard>
         </section>
+
+        <footer className="pt-8 border-t border-[var(--zen-border-subtle)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 zen-font-mono text-xs text-[var(--zen-ink-muted)]">
+          <div className="flex flex-wrap items-center gap-3">
+            <span>© {new Date().getFullYear()} Lukas Pabst</span>
+            <span>·</span>
+            <span>MIT License</span>
+            <span>·</span>
+            <span>Sissach, CH</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href="https://ui.lpabst.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[var(--zen-ink-primary)] transition-colors"
+            >
+              ui.lpabst.dev
+            </a>
+            <a
+              href="https://terminal.lpabst.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[var(--zen-ink-primary)] transition-colors"
+            >
+              terminal.lpabst.dev
+            </a>
+            <button
+              type="button"
+              onClick={() => setImprintOpen(true)}
+              className="zen-focus-ring text-[var(--zen-accent-primary)] hover:underline cursor-pointer"
+            >
+              {locale === 'en'
+                ? 'Imprint & Privacy'
+                : 'Impressum & Datenschutz'}
+            </button>
+          </div>
+        </footer>
       </main>
+
+      <ZenModal
+        open={imprintOpen}
+        onClose={() => setImprintOpen(false)}
+        eyebrow={
+          locale === 'en'
+            ? 'LEGAL NOTICE · SWITZERLAND & EU'
+            : 'RECHTLICHE ANGABEN · SCHWEIZ & EU'
+        }
+        title={
+          locale === 'en' ? 'Imprint & Privacy' : 'Impressum & Datenschutz'
+        }
+        subtitle="lpabst.dev · ui.lpabst.dev · terminal.lpabst.dev"
+        footer={
+          <ZenButton
+            variant="secondary"
+            size="sm"
+            mono
+            onClick={() => setImprintOpen(false)}
+          >
+            {locale === 'en' ? 'Close' : 'Schließen'}
+          </ZenButton>
+        }
+      >
+        <div className="space-y-4 text-sm text-[var(--zen-ink-secondary)] leading-relaxed">
+          <div>
+            <div className="zen-telemetry-label text-[var(--zen-ink-primary)] mb-1">
+              {locale === 'en'
+                ? 'RESPONSIBLE FOR CONTENT'
+                : 'VERANTWORTLICH FÜR DEN INHALT'}
+            </div>
+            <p className="text-[var(--zen-ink-primary)] font-medium">
+              Lukas Pabst
+            </p>
+            <p>4450 Sissach, Kanton Basel-Landschaft, Switzerland</p>
+            <p className="mt-1">
+              E-Mail:{' '}
+              <a
+                href={`mailto:${ATELIER_PROFILE.email}`}
+                className="text-[var(--zen-accent-primary)] hover:underline"
+              >
+                {ATELIER_PROFILE.email}
+              </a>
+            </p>
+          </div>
+
+          <div>
+            <div className="zen-telemetry-label text-[var(--zen-ink-primary)] mb-1">
+              {locale === 'en'
+                ? 'PURPOSE OF THIS WEBSITE'
+                : 'ZWECK DIESER WEBSITE'}
+            </div>
+            <p>
+              {locale === 'en'
+                ? 'This website and its subdomains (ui.lpabst.dev, terminal.lpabst.dev) are a non-commercial personal developer portfolio and open-source software showcase.'
+                : 'Diese Website sowie ihre Subdomains (ui.lpabst.dev, terminal.lpabst.dev) dienen ausschließlich als nicht-kommerzielles persönliches Entwickler-Portfolio und zur Vorstellung von Open-Source-Projekten.'}
+            </p>
+          </div>
+
+          <div>
+            <div className="zen-telemetry-label text-[var(--zen-ink-primary)] mb-1">
+              {locale === 'en'
+                ? 'PRIVACY & HOSTING (CH-nDSG / GDPR)'
+                : 'DATENSCHUTZ & HOSTING (CH-nDSG / DSGVO)'}
+            </div>
+            <p>
+              {locale === 'en'
+                ? 'This site uses zero tracking cookies, zero analytics scripts, and no advertising trackers. It is hosted on a dedicated Linux server at Hetzner Online GmbH (Germany/EU) behind Cloudflare DNS/TLS protection. Standard technical server logs (IP address, timestamp, requested path) are processed solely to ensure secure operation and mitigate abuse.'
+                : 'Diese Website verwendet keine Tracking-Cookies, keine Analyse-Tools und keine Werbe-Tracker. Das Hosting erfolgt auf einem Server bei der Hetzner Online GmbH (Deutschland/EU) sowie über Cloudflare zum Schutz der Verbindung. Technisch notwendige Server-Logs (IP-Adresse, Zeitpunkt, aufgerufener Pfad) werden ausschließlich zur sicheren Bereitstellung und Missbrauchsabwehr verarbeitet.'}
+            </p>
+          </div>
+
+          <div>
+            <div className="zen-telemetry-label text-[var(--zen-ink-primary)] mb-1">
+              {locale === 'en'
+                ? 'OPEN SOURCE LICENSE'
+                : 'OPEN-SOURCE-LIZENZ'}
+            </div>
+            <p>
+              {locale === 'en'
+                ? 'Source code across linked repositories is released under the MIT License unless stated otherwise.'
+                : 'Der Quellcode der verlinkten Repositories steht, sofern nicht anders angegeben, unter der MIT-Lizenz.'}
+            </p>
+          </div>
+        </div>
+      </ZenModal>
     </div>
   );
 }
