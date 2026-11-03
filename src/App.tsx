@@ -9,16 +9,12 @@ import {
   ZenBadge,
   ZenButton,
   ZenCopyButton,
-  ZenDropdown,
   ZenSegmentedControl,
   ZenDossierPanel,
   ZenTimelineCard,
   ZenAudioController,
   ZenIcon,
   useZenAudioSynth,
-  useZenTheme,
-  ZEN_THEMES,
-  type ZenThemeId,
   type ZenDossierItem,
 } from '@zen-ui/system';
 import {
@@ -36,7 +32,6 @@ export default function App() {
   const [workFilter, setWorkFilter] = useState<WorkFilter>('all');
   const [activeWorkId, setActiveWorkId] = useState<string>(ATELIER_WORKS[0].id);
 
-  const { theme, setTheme } = useZenTheme();
   const synth = useZenAudioSynth();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -84,7 +79,13 @@ export default function App() {
       primaryAction: activeWork.liveUrl
         ? {
             label:
-              locale === 'en' ? 'Open Live Demo' : 'Live-Demo öffnen',
+              activeWork.id === 'journeylink'
+                ? locale === 'en'
+                  ? 'Live Demo (demo.journeylink.dev)'
+                  : 'Live-Demo (demo.journeylink.dev)'
+                : locale === 'en'
+                  ? 'Open Live Demo'
+                  : 'Live-Demo öffnen',
             href: activeWork.liveUrl,
             icon: <ZenIcon name="globe" size="sm" />,
           }
@@ -217,48 +218,17 @@ export default function App() {
       <ZenNavbar
         brandTitle="Lukas Pabst"
         brandSubtitle="FULL STACK DEVELOPER · SISSACH, CH"
-        navSlot={
-          <>
-            <a
-              href="#exhibition"
-              className="zen-focus-ring px-3 py-1.5 rounded-xl zen-font-mono text-xs text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] hover:bg-[var(--zen-surface-subtle)] transition-colors"
-            >
-              {locale === 'en' ? 'Projects' : 'Projekte'}
-            </a>
-            <a
-              href="#career"
-              className="zen-focus-ring px-3 py-1.5 rounded-xl zen-font-mono text-xs text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] hover:bg-[var(--zen-surface-subtle)] transition-colors"
-            >
-              {locale === 'en' ? 'Experience' : 'Werdegang'}
-            </a>
-            <a
-              href="#contact"
-              className="zen-focus-ring px-3 py-1.5 rounded-xl zen-font-mono text-xs text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] hover:bg-[var(--zen-surface-subtle)] transition-colors"
-            >
-              {locale === 'en' ? 'Contact' : 'Kontakt'}
-            </a>
-          </>
-        }
         actionsSlot={
           <>
-            <div className="hidden sm:block w-44">
-              <ZenDropdown<ZenThemeId>
-                ariaLabel="Select portfolio theme"
-                value={theme}
-                onChange={setTheme}
-                options={ZEN_THEMES.map((t) => ({
-                  value: t.id,
-                  label: t.name,
-                  badge: t.polarity.toUpperCase(),
-                }))}
-              />
-            </div>
-
             <ZenAudioController
               synth={synth}
               mode="pill"
-              activeLabel={locale === 'en' ? 'Lo-Fi: ON' : 'Lo-Fi: AN'}
-              idleLabel={locale === 'en' ? 'Lo-Fi Radio' : 'Lo-Fi Musik'}
+              activeLabel={
+                locale === 'en' ? 'Lo-Fi Radio: ON' : 'Lo-Fi Radio: AN'
+              }
+              idleLabel={
+                locale === 'en' ? 'Lo-Fi Background' : 'Lo-Fi Musik'
+              }
             />
 
             <ZenButton
@@ -279,35 +249,43 @@ export default function App() {
         }
       />
 
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-28 sm:pt-32 pb-24">
-        <section className="min-h-[80vh] flex flex-col justify-between pb-12 border-b border-[var(--zen-border-subtle)]">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-32 pb-24">
+        <section className="min-h-[82vh] flex flex-col justify-between pb-12 border-b border-[var(--zen-border-subtle)]">
           <div className="max-w-4xl">
-            <div className="atelier-reveal mb-6">
-              <ZenBadge
-                tone="gold"
-                icon={<ZenIcon name="sparkles" size="xs" tone="accent" />}
-              >
+            <div className="atelier-reveal inline-flex items-center gap-2 zen-font-mono text-xs uppercase tracking-widest text-[var(--zen-accent-primary)] mb-6 drop-shadow-[0_2px_12px_rgba(7,7,9,0.9)]">
+              <ZenIcon name="sparkles" size="xs" tone="accent" />
+              <span>
                 {ATELIER_PROFILE.role[locale]} · {ATELIER_PROFILE.company} ·
                 Sissach, CH
-              </ZenBadge>
+              </span>
             </div>
 
-            <div className="atelier-reveal mb-8">
-              <ZenHeading
-                as="h1"
-                size="hero"
-                accentText={locale === 'en' ? 'Motion & Code.' : 'Bewegung & Code.'}
-              >
-                {locale === 'en' ? 'Architecture in' : 'Architektur in'}
-              </ZenHeading>
-            </div>
+            <h1 className="atelier-reveal zen-font-display font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight leading-[0.94] mb-8 text-[var(--zen-ink-primary)] drop-shadow-[0_4px_28px_rgba(7,7,9,0.95)]">
+              {locale === 'en' ? (
+                <>
+                  Architecture in{' '}
+                  <span className="zen-font-serif italic font-normal text-[var(--zen-accent-primary)]">
+                    Motion
+                  </span>{' '}
+                  &amp; Code.
+                </>
+              ) : (
+                <>
+                  Architektur in{' '}
+                  <span className="zen-font-serif italic font-normal text-[var(--zen-accent-primary)]">
+                    Bewegung
+                  </span>{' '}
+                  &amp; Code.
+                </>
+              )}
+            </h1>
 
             <ZenCard
               variant="static"
               padding="md"
               className="atelier-reveal max-w-2xl mb-10"
             >
-              <p className="text-base sm:text-xl text-[var(--zen-ink-secondary)] leading-relaxed">
+              <p className="text-lg sm:text-xl text-[var(--zen-ink-secondary)] leading-relaxed">
                 {ATELIER_PROFILE.statement[locale]}
               </p>
             </ZenCard>
@@ -335,14 +313,14 @@ export default function App() {
             <div>
               <div className="zen-telemetry-label">
                 {locale === 'en'
-                  ? 'UI & ARCHITECTURE SYSTEM'
-                  : 'UI- & ARCHITEKTUR-SYSTEM'}
+                  ? 'SIDE PROJECT (LIVE DEMO)'
+                  : 'PRIVATES PROJEKT (LIVE-DEMO)'}
               </div>
               <div className="zen-font-display font-bold text-lg mt-1 text-[var(--zen-ink-primary)]">
-                Powered by @zen-ui/system
+                JourneyLink (Architecture Sandbox)
               </div>
               <div className="text-xs text-[var(--zen-ink-secondary)] mt-0.5">
-                JourneyLink (12 MFEs) · 8 Themes · Capri Security Guard
+                Angular 20 Native Federation · Spring Boot · RabbitMQ
               </div>
             </div>
 
@@ -351,17 +329,19 @@ export default function App() {
                 href="https://demo.journeylink.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="zen-btn-base zen-btn-primary zen-focus-ring px-5 py-3 text-xs"
+                className="zen-btn-base zen-btn-primary zen-focus-ring px-6 py-3.5 text-sm"
               >
                 <span>
-                  {locale === 'en' ? 'JourneyLink Demo' : 'JourneyLink Demo'}
+                  {locale === 'en'
+                    ? 'Try Demo (demo.journeylink.dev)'
+                    : 'Demo (demo.journeylink.dev)'}
                 </span>
                 <ZenIcon name="external-link" size="xs" />
               </a>
 
               <ZenButton
                 variant="secondary"
-                size="md"
+                size="lg"
                 mono
                 pressed={synth.active}
                 onClick={synth.toggle}
@@ -383,7 +363,6 @@ export default function App() {
                   ? 'WORK & SIDE PROJECTS'
                   : 'BERUFLICHE PROJEKTE & EIGENE TOOLS'
               }
-              eyebrowIcon={<ZenIcon name="layers" size="xs" tone="accent" />}
             >
               {locale === 'en' ? 'Projects' : 'Projekte'}
             </ZenHeading>
@@ -410,7 +389,8 @@ export default function App() {
                 },
                 {
                   value: 'personal',
-                  label: locale === 'en' ? 'Open Source' : 'Privat & Open Source',
+                  label:
+                    locale === 'en' ? 'Side Projects' : 'Privat & Hobby',
                   count: personalWorks.length,
                   icon: <ZenIcon name="code" size="xs" />,
                 },
@@ -480,7 +460,6 @@ export default function App() {
               eyebrow={
                 locale === 'en' ? 'BACKGROUND & CV' : 'WERDEGANG & AUSBILDUNG'
               }
-              eyebrowIcon={<ZenIcon name="activity" size="xs" tone="accent" />}
             >
               {locale === 'en'
                 ? 'Experience & Education'
@@ -533,7 +512,6 @@ export default function App() {
                     ? 'CONTACT · SISSACH, SWITZERLAND'
                     : 'KONTAKT · SISSACH, SCHWEIZ'
                 }
-                eyebrowIcon={<ZenIcon name="terminal" size="xs" tone="accent" />}
                 accentText={locale === 'en' ? 'talk.' : 'mir.'}
                 className="mb-6"
               >
@@ -546,12 +524,11 @@ export default function App() {
                   : 'Ich bin 25, komme ursprünglich aus Thüringen und lebe heute in Sissach bei Basel. Nach meinem dualen Wirtschaftsinformatik-Studium (B.Sc.) an der DHBW Stuttgart hat es mich in die Schweiz gezogen. Wenn ich nicht am Code sitze, findet man mich meistens beim Kraftsport im Gym oder mit einem Buch.'}
               </p>
 
-              <div className="flex flex-wrap items-center gap-3.5">
+              <div className="flex flex-wrap items-center gap-4">
                 <a
                   href={`mailto:${ATELIER_PROFILE.email}`}
                   className="zen-btn-base zen-btn-primary zen-focus-ring px-6 py-3.5 text-sm"
                 >
-                  <ZenIcon name="terminal" size="sm" />
                   <span>{ATELIER_PROFILE.email}</span>
                 </a>
 
@@ -559,26 +536,16 @@ export default function App() {
                   value={ATELIER_PROFILE.email}
                   label={locale === 'en' ? 'COPY EMAIL' : 'E-MAIL KOPIEREN'}
                   copiedLabel={locale === 'en' ? 'COPIED' : 'KOPIERT'}
-                  size="md"
+                  size="lg"
                 />
 
                 <a
                   href="https://demo.journeylink.dev"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3 text-xs zen-font-mono"
+                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3.5 text-xs zen-font-mono"
                 >
                   <span>demo.journeylink.dev</span>
-                  <ZenIcon name="external-link" size="xs" tone="accent" />
-                </a>
-
-                <a
-                  href="https://lukaspabst.github.io/zeN-UI/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3 text-xs zen-font-mono"
-                >
-                  <span>@zen-ui/system</span>
                   <ZenIcon name="external-link" size="xs" tone="accent" />
                 </a>
 
@@ -586,7 +553,7 @@ export default function App() {
                   href={ATELIER_PROFILE.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3 text-xs zen-font-mono"
+                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3.5 text-xs zen-font-mono"
                 >
                   <span>GitHub</span>
                   <ZenIcon name="external-link" size="xs" tone="accent" />

@@ -420,7 +420,7 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     id: 'zen-ui',
     index: 'VI',
     category: 'personal',
-    title: 'zeN-UI // CAPRI (@zen-ui/system)',
+    title: 'zeN-UI & Capri CLI',
     role: {
       en: 'Design System, WebGL Engine & Security Co-Pilot',
       de: 'Design-System, WebGL-Engine & Security Co-Pilot',
