@@ -412,7 +412,7 @@ export default function App() {
                       </span>
                     </div>
                     <span className="zen-telemetry-label">
-                      Primeo Energie · Finanz-Data · DHBW
+                      Primeo Energie · Finanz-Data
                     </span>
                   </div>
                   <div className="space-y-4">
