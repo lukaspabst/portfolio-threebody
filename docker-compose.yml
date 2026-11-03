@@ -1,0 +1,18 @@
+services:
+  portfolio-web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: portfolio-web
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    networks:
+      - mc-net
+
+networks:
+  mc-net:
+    external: true
+    name: minecraft_mc-net
