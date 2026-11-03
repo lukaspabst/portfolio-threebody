@@ -51,7 +51,7 @@ export const ATELIER_PROFILE = {
   flagship: 'JourneyLink (Personal Demo)',
   previousCompany: 'Finanz-Data GmbH (Gotha)',
   degree: 'B.Sc. Business Informatics (DHBW Stuttgart)',
-  email: 'lukas.pabst.business@outlook.de',
+  email: 'lukas.pabst@outlook.de',
   github: 'https://github.com/lukaspabst',
   journeyLinkGithub: 'https://github.com/Journey-Link',
   xing: 'https://www.xing.com/profile/Lukas_Pabst102',
