@@ -733,7 +733,7 @@ function BlenderThreeBodyCosmos({
         const cx = (ndc.x * 0.5 + 0.5) * window.innerWidth;
         const cy = (-ndc.y * 0.5 + 0.5) * window.innerHeight;
         const topEl = document.elementFromPoint(cx, cy);
-        if (topEl?.closest('a, button, [role="button"], header, #exhibition')) {
+        if (topEl?.closest('a, button, [role="button"], header, #exhibition, #career')) {
           uiBlocked = true;
         }
       }
@@ -899,7 +899,7 @@ export default function ChromaticSculptureScene(props: ChromaticSculptureProps) 
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {
       const target = e.target as HTMLElement | null;
-      if (target?.closest('a, button, [role="button"], header, #exhibition')) {
+      if (target?.closest('a, button, [role="button"], header, #exhibition, #career')) {
         pointerNdcRef.current.set(-99, -99);
         return;
       }

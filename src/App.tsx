@@ -14,8 +14,15 @@ import {
   Check,
   Copy,
   CheckCircle2,
+  Briefcase,
+  GraduationCap,
 } from 'lucide-react';
-import { ATELIER_PROFILE, ATELIER_WORKS, type Locale } from './data/atelierData';
+import {
+  ATELIER_PROFILE,
+  ATELIER_TIMELINE,
+  ATELIER_WORKS,
+  type Locale,
+} from './data/atelierData';
 
 const ChromaticSculptureScene = lazy(
   () => import('./components/ChromaticSculptureScene')
@@ -227,7 +234,7 @@ export default function App() {
               Lukas Pabst
             </span>
             <span className="hidden md:inline-block ml-3 font-mono text-xs opacity-65">
-              SOFTWARE DEVELOPER · SISSACH, CH
+              FULL STACK DEVELOPER · SISSACH, CH
             </span>
           </div>
 
@@ -306,9 +313,13 @@ export default function App() {
             <div>
               <div className="font-mono text-xs opacity-60">CURRENT APPOINTMENT</div>
               <div className="font-['Syne'] font-bold text-lg mt-1">
-                Software Developer · Primeo Energie AG
+                Full Stack Developer · Primeo Energie
               </div>
-              <div className="text-xs opacity-70 mt-0.5">Sissach, Switzerland (09.2024 – Present)</div>
+              <div className="text-xs opacity-70 mt-0.5">
+                {locale === 'en'
+                  ? 'Technical Lead Java & Angular · SCS · Keycloak IDP (09/2024 – Present)'
+                  : 'Fachverantwortung Java & Angular · SCS · Keycloak IDP (seit 09/2024)'}
+              </div>
             </div>
 
             <div>
@@ -504,19 +515,95 @@ export default function App() {
                       <ArrowUpRight className="w-4 h-4" />
                     </a>
                   )}
-                  <a
-                    href={activeWork.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 py-3.5 px-5 rounded-full bg-[#2952FF] text-white font-medium text-xs inline-flex items-center justify-center gap-2 hover:opacity-95 transition-opacity"
-                  >
-                    <Github className="w-4 h-4" />
-                    {activeWork.id === 'journeylink' ? 'GitHub Org' : 'Source on GitHub'}
-                    <ArrowUpRight className="w-4 h-4" />
-                  </a>
+                  {activeWork.href && (
+                    <a
+                      href={activeWork.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-3.5 px-5 rounded-full bg-[#2952FF] text-white font-medium text-xs inline-flex items-center justify-center gap-2 hover:opacity-95 transition-opacity"
+                    >
+                      <Github className="w-4 h-4" />
+                      {activeWork.id === 'journeylink' ? 'GitHub Org' : 'Source on GitHub'}
+                      <ArrowUpRight className="w-4 h-4" />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section id="career" className="py-24 border-t border-current/15">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14">
+            <div>
+              <span className="font-mono text-xs text-[#D4AF37]">
+                {locale === 'en' ? 'CURRICULUM VITAE · CAREER & EDUCATION' : 'WERDEGANG & AUSBILDUNG'}
+              </span>
+              <h2 className="font-['Syne'] text-4xl sm:text-6xl font-bold mt-2">
+                {locale === 'en' ? 'Experience & Education' : 'Berufserfahrung & Studium'}
+              </h2>
+            </div>
+            <p className="text-sm opacity-75 max-w-sm mt-3 md:mt-0">
+              {locale === 'en'
+                ? 'Academic foundation in Business Informatics (B.Sc., DHBW Stuttgart) combined with enterprise backend and full-stack software engineering.'
+                : 'Duales Studium der Wirtschaftsinformatik (B.Sc., DHBW Stuttgart) kombiniert mit mehrjähriger Praxis in der Java- & Spring-Boot-Entwicklung.'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {ATELIER_TIMELINE.map((entry) => (
+              <div
+                key={`${entry.institution}-${entry.period.en}`}
+                className={`p-6 sm:p-8 rounded-3xl border backdrop-blur-xl flex flex-col justify-between ${cardBgClass}`}
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 font-mono text-xs mb-4">
+                    <span className="inline-flex items-center gap-1.5 text-[#D4AF37]">
+                      {entry.category === 'experience' ? (
+                        <Briefcase className="w-3.5 h-3.5" />
+                      ) : (
+                        <GraduationCap className="w-3.5 h-3.5" />
+                      )}
+                      {entry.period[locale]}
+                    </span>
+                    <span className="opacity-65">{entry.location[locale]}</span>
+                  </div>
+
+                  <h3 className="font-['Syne'] text-xl sm:text-2xl font-bold">
+                    {entry.title[locale]}
+                  </h3>
+                  <div className="font-['Instrument_Serif'] italic text-xl text-[#D4AF37] mt-0.5 mb-3">
+                    {entry.institution}
+                  </div>
+
+                  <p className="text-sm opacity-80 leading-relaxed mb-4">
+                    {entry.summary[locale]}
+                  </p>
+
+                  {entry.bullets && (
+                    <ul className="space-y-1.5 mb-5">
+                      {entry.bullets[locale].map((bullet) => (
+                        <li key={bullet} className="flex items-start gap-2 text-xs opacity-85">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37] shrink-0 mt-0.5" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-3 border-t border-current/10">
+                  {entry.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 rounded-full border border-current/15 font-mono text-[11px] opacity-85"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -547,8 +634,8 @@ export default function App() {
               </h2>
               <p className="text-base sm:text-lg opacity-80 mb-8">
                 {locale === 'en'
-                  ? 'Born 23.03.2001 in Germany, living in Sissach, Switzerland. Native German & fluent English. Outside of software architecture, dedicated to strength training (Kraftsport) and technical literature.'
-                  : 'Geboren am 23.03.2001, wohnhaft in Sissach, Schweiz. Deutsch (Muttersprache) & Englisch (Fließend). Neben der Softwarearchitektur leidenschaftlich im Kraftsport und der Fachliteratur aktiv.'}
+                  ? 'Born 23.03.2001 in Sondershausen, living in Sissach, Switzerland. B.Sc. in Business Informatics (DHBW Stuttgart). German (Native) & English (Proficient in spoken and written). Interests: Weightlifting, Programming, Reading.'
+                  : 'Geboren am 23.03.2001 in Sondershausen, wohnhaft in Sissach, Schweiz. B.Sc. Wirtschaftsinformatik (DHBW Stuttgart). Deutsch (Muttersprache) & Englisch (Fließend in Wort und Schrift). Interessen: Kraftsport, Programmieren, Lesen.'}
               </p>
 
               <div className="flex flex-wrap items-center gap-4">
