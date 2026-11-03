@@ -5,3 +5,6 @@ coverage/
 .env*
 !.env.example
 .DS_Store
+.agents/
+.playwright-mcp/
+skills-lock.json
