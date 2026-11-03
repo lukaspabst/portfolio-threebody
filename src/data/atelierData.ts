@@ -1,4 +1,5 @@
 export type Locale = 'en' | 'de';
+export type WorkCategory = 'enterprise' | 'personal';
 
 export interface AtelierTimelineEntry {
   readonly period: { readonly en: string; readonly de: string };
@@ -17,6 +18,7 @@ export interface AtelierTimelineEntry {
 export interface AtelierWork {
   readonly id: string;
   readonly index: string;
+  readonly category: WorkCategory;
   readonly title: string;
   readonly role?: string;
   readonly statusPill?: string;
@@ -107,18 +109,18 @@ export const ATELIER_TIMELINE: readonly AtelierTimelineEntry[] = [
     institution: 'Finanz-Data GmbH',
     location: { en: 'Gotha, Germany', de: 'Gotha, Deutschland' },
     summary: {
-      en: 'Backend and REST service development with Java and Spring Boot in the HUS environment.',
-      de: 'Backend- und REST-Service-Entwicklung mit Java und Spring Boot im HUS-Umfeld.',
+      en: 'Backend and REST service development with Java and Spring Boot in the HUK environment.',
+      de: 'Backend- und REST-Service-Entwicklung mit Java und Spring Boot im HUK-Umfeld.',
     },
     bullets: {
       en: [
         'Backend development with Java and REST service development with Spring Boot',
-        'Support of the HUS environment in daily operations and analysis of functional requirements',
+        'Support of the HUK environment in daily operations and analysis of functional requirements',
         'Transition of legacy REST services to Spring and creation of automated test suites',
       ],
       de: [
         'Backend-Entwicklung mit Java sowie REST-Service-Entwicklung mit Spring Boot',
-        'Betreuung der HUS-Umgebung im Tagesgeschäft und Analyse fachlicher Anforderungen',
+        'Betreuung der HUK-Umgebung im Tagesgeschäft und Analyse fachlicher Anforderungen',
         'Transition von REST-Services auf Spring sowie Erstellung automatisierter Tests',
       ],
     },
@@ -157,9 +159,10 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
   {
     id: 'primeo-kundenportal',
     index: 'I',
+    category: 'enterprise',
     title: 'Primeo Energie — Kundenportal',
     role: 'Full Stack Developer · Fachverantwortung Java & Angular',
-    statusPill: 'Enterprise Production',
+    statusPill: 'Enterprise Work',
     archPill: 'Self-Contained Systems (SCS)',
     subtitle: {
       en: 'Self-Contained Systems (SCS), Keycloak IDP & Magnolia CMS',
@@ -209,11 +212,90 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     ],
   },
   {
-    id: 'journeylink',
+    id: 'huk-environment',
     index: 'II',
+    category: 'enterprise',
+    title: 'HUK-Environment',
+    role: 'Software Developer · Finanz-Data GmbH (Gotha)',
+    statusPill: 'Enterprise Work',
+    archPill: 'Backend & Spring Migration',
+    subtitle: {
+      en: 'REST Service Modernization & Operations in the HUK Environment',
+      de: 'REST-Service-Modernisierung & Backend-Betrieb im HUK-Umfeld',
+    },
+    discipline: {
+      en: 'Java · Spring Boot · REST Services · JUnit · Jenkins',
+      de: 'Java · Spring Boot · REST-Services · JUnit · Jenkins',
+    },
+    year: '01/2023 — 08/2024',
+    story: {
+      en: 'Enterprise project at Finanz-Data GmbH supporting the HUK environment in daily operations, analyzing functional requirements, implementing backend solutions, and transitioning legacy REST services to Spring Boot.',
+      de: 'Enterprise-Projekt bei der Finanz-Data GmbH zur Betreuung der HUK-Umgebung im laufenden Betrieb, Analyse fachlicher Anforderungen, Implementierung neuer Backend-Lösungen und Migration bestehender REST-Services auf Spring Boot.',
+    },
+    engineeringNote: {
+      en: 'Step-by-step migration of production REST endpoints to Spring Boot accompanied by automated JUnit regression suites and Jenkins CI pipelines.',
+      de: 'Schrittweise Transition produktiver REST-Schnittstellen auf Spring Boot inklusive Aufbau automatisierter JUnit-Testsuites und Jenkins-Pipelines.',
+    },
+    highlights: {
+      en: [
+        'Analysis of functional requirements and technical specification in Confluence and Innovator.',
+        'Transition and refactoring of legacy REST services to modern Java & Spring Boot architectures.',
+        'Creation of automated unit and integration tests (JUnit, Postman) integrated with Jenkins.',
+      ],
+      de: [
+        'Analyse fachlicher Anforderungen sowie technische Konzeption in Confluence und Innovator.',
+        'Transition und Refactoring bestehender REST-Services auf moderne Java- & Spring-Boot-Architekturen.',
+        'Aufbau automatisierter Unit- und Integrationstests (JUnit, Postman) mit Jenkins-Anbindung.',
+      ],
+    },
+    stack: ['Java', 'Spring Boot', 'REST APIs', 'JUnit', 'Jenkins', 'Postman', 'Innovator', 'Git'],
+  },
+  {
+    id: 'burda-timetracking',
+    index: 'III',
+    category: 'enterprise',
+    title: 'BURDA Timetracking',
+    role: 'Software Developer · Enterprise Project (DHBW)',
+    statusPill: 'Enterprise Work',
+    archPill: 'HR Workflow & AWS Cloud',
+    subtitle: {
+      en: 'Employee Time Tracking & HR Approval Workflow System',
+      de: 'Zeiterfassungssystem & HR-Freigabe-Workflow',
+    },
+    discipline: {
+      en: 'Java · Spring · Web · AWS · Scrum',
+      de: 'Java · Spring · Web · AWS · Scrum',
+    },
+    year: 'DHBW · ENTERPRISE',
+    story: {
+      en: 'Development of an internal time-tracking application enabling employees to record, modify, save, and submit working hours while providing HR reviewers with approval and rejection workflows including mandatory feedback.',
+      de: 'Entwicklung einer Zeiterfassungs-Applikation, mit der Mitarbeitende Arbeitszeiten erfassen, bearbeiten, speichern und einreichen können – inklusive HR-Prüfungsprozess für Genehmigungen oder begründete Ablehnungen.',
+    },
+    engineeringNote: {
+      en: 'Designed and implemented end-to-end in an agile Scrum environment with automated test coverage and AWS infrastructure integration.',
+      de: 'End-to-End konzipiert und umgesetzt im agilen Scrum-Prozess mit automatisierten Tests und AWS-Cloud-Integration.',
+    },
+    highlights: {
+      en: [
+        'Analysis and documentation of functional requirements and support for overall sprint & project management.',
+        'Full application design and implementation for employee time entry and HR approval/rejection workflows.',
+        'Automated test suite implementation and deployment workflow on AWS.',
+      ],
+      de: [
+        'Analyse und Dokumentation fachlicher Anforderungen sowie Unterstützung im gesamten Sprint- und Projektmanagement.',
+        'Konzeption und Implementierung der Zeiterfassungs- und HR-Genehmigungsprozesse.',
+        'Erstellung automatisierter Tests und Bereitstellung unter Einsatz von AWS.',
+      ],
+    },
+    stack: ['Java', 'Spring', 'AWS', 'Scrum', 'Postman', 'JUnit', 'Git', 'IntelliJ IDEA'],
+  },
+  {
+    id: 'journeylink',
+    index: 'IV',
+    category: 'personal',
     title: 'JourneyLink',
     role: 'Personal Hobby Project & Architecture Demo',
-    statusPill: 'Interactive Demo',
+    statusPill: 'Hobby · Live Demo',
     archPill: 'Microservices & MFEs Sandbox',
     subtitle: {
       en: 'Personal Full-Stack Travel Planning Sandbox & Architecture Demo',
@@ -264,110 +346,70 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     href: 'https://github.com/Journey-Link',
   },
   {
-    id: 'hus-environment',
-    index: 'III',
-    title: 'HUS-Environment',
-    role: 'Software Developer · Finanz-Data GmbH (Gotha)',
-    archPill: 'Enterprise Backend & Spring Migration',
-    subtitle: {
-      en: 'REST Service Modernization & Operations Engineering',
-      de: 'REST-Service-Modernisierung & Backend-Betrieb',
-    },
-    discipline: {
-      en: 'Java · Spring Boot · REST Services · JUnit · Jenkins',
-      de: 'Java · Spring Boot · REST-Services · JUnit · Jenkins',
-    },
-    year: '01/2023 — 08/2024',
-    story: {
-      en: 'Enterprise project at Finanz-Data GmbH supporting the HUS environment in daily operations, analyzing functional requirements, implementing backend solutions, and transitioning legacy REST services to Spring Boot.',
-      de: 'Enterprise-Projekt bei der Finanz-Data GmbH zur Betreuung der HUS-Umgebung im laufenden Betrieb, Analyse fachlicher Anforderungen, Implementierung neuer Backend-Lösungen und Migration bestehender REST-Services auf Spring Boot.',
-    },
-    engineeringNote: {
-      en: 'Step-by-step migration of production REST endpoints to Spring Boot accompanied by automated JUnit regression suites and Jenkins CI pipelines.',
-      de: 'Schrittweise Transition produktiver REST-Schnittstellen auf Spring Boot inklusive Aufbau automatisierter JUnit-Testsuites und Jenkins-Pipelines.',
-    },
-    highlights: {
-      en: [
-        'Analysis of functional requirements and technical specification in Confluence and Innovator.',
-        'Transition and refactoring of legacy REST services to modern Java & Spring Boot architectures.',
-        'Creation of automated unit and integration tests (JUnit, Postman) integrated with Jenkins.',
-      ],
-      de: [
-        'Analyse fachlicher Anforderungen sowie technische Konzeption in Confluence und Innovator.',
-        'Transition und Refactoring bestehender REST-Services auf moderne Java- & Spring-Boot-Architekturen.',
-        'Aufbau automatisierter Unit- und Integrationstests (JUnit, Postman) mit Jenkins-Anbindung.',
-      ],
-    },
-    stack: ['Java', 'Spring Boot', 'REST APIs', 'JUnit', 'Jenkins', 'Postman', 'Innovator', 'Git'],
-  },
-  {
-    id: 'burda-timetracking',
-    index: 'IV',
-    title: 'BURDA Timetracking',
-    role: 'Software Developer · Enterprise Project',
-    archPill: 'HR Workflow & AWS Cloud',
-    subtitle: {
-      en: 'Employee Time Tracking & HR Approval Workflow System',
-      de: 'Zeiterfassungssystem & HR-Freigabe-Workflow',
-    },
-    discipline: {
-      en: 'Java · Spring · Web · AWS · Scrum',
-      de: 'Java · Spring · Web · AWS · Scrum',
-    },
-    year: 'DHBW · ENTERPRISE',
-    story: {
-      en: 'Development of an internal time-tracking application enabling employees to record, modify, save, and submit working hours while providing HR reviewers with approval and rejection workflows including mandatory feedback.',
-      de: 'Entwicklung einer Zeiterfassungs-Applikation, mit der Mitarbeitende Arbeitszeiten erfassen, bearbeiten, speichern und einreichen können – inklusive HR-Prüfungsprozess für Genehmigungen oder begründete Ablehnungen.',
-    },
-    engineeringNote: {
-      en: 'Designed and implemented end-to-end in an agile Scrum environment with automated test coverage and AWS infrastructure integration.',
-      de: 'End-to-End konzipiert und umgesetzt im agilen Scrum-Prozess mit automatisierten Tests und AWS-Cloud-Integration.',
-    },
-    highlights: {
-      en: [
-        'Analysis and documentation of functional requirements and support for overall sprint & project management.',
-        'Full application design and implementation for employee time entry and HR approval/rejection workflows.',
-        'Automated test suite implementation and deployment workflow on AWS.',
-      ],
-      de: [
-        'Analyse und Dokumentation fachlicher Anforderungen sowie Unterstützung im gesamten Sprint- und Projektmanagement.',
-        'Konzeption und Implementierung der Zeiterfassungs- und HR-Genehmigungsprozesse.',
-        'Erstellung automatisierter Tests und Bereitstellung unter Einsatz von AWS.',
-      ],
-    },
-    stack: ['Java', 'Spring', 'AWS', 'Scrum', 'Postman', 'JUnit', 'Git', 'IntelliJ IDEA'],
-  },
-  {
     id: 'dc-translation',
     index: 'V',
-    title: 'DC-Translation by zeN',
-    role: 'Open-Source Creator',
-    archPill: 'AES-256-GCM & Multi-Tier Cache',
+    category: 'personal',
+    title: 'Discord Translation Bot (dc-translation)',
+    role: 'Personal Open-Source Project',
+    statusPill: 'Hobby · Open Source',
+    archPill: 'Live Threads & AES-256-GCM',
     subtitle: {
-      en: 'Encrypted Multilingual Discord Translation Bot',
-      de: 'Verschlüsselter mehrsprachiger Discord-Übersetzungs-Bot',
+      en: 'Quota-Preserving Multilingual Discord Bot with Private Live Threads',
+      de: 'Ressourcenschonender mehrsprachiger Discord-Bot mit privaten Live-Threads',
     },
     discipline: {
-      en: 'TypeScript · Node.js · AES-256-GCM · SQLite · MongoDB',
-      de: 'TypeScript · Node.js · AES-256-GCM · SQLite · MongoDB',
+      en: 'TypeScript 6 · Node.js 20+ · Discord.js v14 · Google Cloud & DeepL · AES-256-GCM',
+      de: 'TypeScript 6 · Node.js 20+ · Discord.js v14 · Google Cloud & DeepL · AES-256-GCM',
     },
-    year: 'OPEN SOURCE',
+    year: 'HOBBY · OPEN SOURCE',
     story: {
-      en: 'High-performance multilingual Discord translation bot featuring private live translation threads, AES-256-GCM field-level encryption, DeepL & Google Translate routing, and multi-tier caching.',
-      de: 'Performanter mehrsprachiger Discord-Übersetzungs-Bot mit privaten Live-Threads, AES-256-GCM-Feldverschlüsselung, DeepL- & Google-Translate-Routing sowie mehrstufigem Caching.',
+      en: 'High-performance multilingual Discord translation bot replacing public channel spam with private split-screen Live Translation Threads, right-click ephemeral context menu cards, and country flag reactions across 135+ languages.',
+      de: 'Performanter mehrsprachiger Discord-Übersetzungs-Bot, der öffentlichen Channel-Spam durch private Split-Screen-Live-Threads, ephemere Kontextmenü-Karten (Apps › Translate) und Flaggen-Reaktionen in über 135 Sprachen ersetzt.',
     },
     engineeringNote: {
-      en: 'Combines in-memory LRU, SQLite, and MongoDB persistence with authenticated AES-256-GCM encryption for sensitive configuration data.',
-      de: 'Kombiniert mehrstufiges Caching (SQLite & MongoDB) mit authentifizierter AES-256-GCM-Verschlüsselung.',
+      en: 'Algorithmic pre-flight filtering and local n-gram language detection feed a 3.5s message batcher and a stampede-proof coalesced cache (L1 LRU memory + L2 MongoDB Atlas 14-day TTL), secured at rest via AES-256-GCM and HMAC-SHA256 derived keys.',
+      de: 'Algorithmische Vorfilterung und lokale N-Gram-Spracherkennung speisen einen 3,5-Sekunden-Message-Batcher sowie einen Stampede-geschützten L1/L2-Cache (Memory LRU + MongoDB Atlas TTL), verschlüsselt via AES-256-GCM und HMAC-SHA256.',
     },
-    stack: ['TypeScript', 'Node.js', 'AES-256-GCM', 'DeepL API', 'MongoDB', 'SQLite'],
-    href: 'https://github.com/lukaspabst/DC-Translation-by-zeN',
+    highlights: {
+      en: [
+        'Unified Private Live Threads & Ephemeral Cards: Streams 3.5s-batched translations into a personal split-screen thread with channel focus filtering, unread catch-up, and 1-click channel muting.',
+        'Algorithmic Pre-Filtering & Coalesced Cache: Strips markup, custom emojis, URLs, and bot commands before API calls; deduplicates concurrent in-flight requests across L1 memory and L2 MongoDB Atlas.',
+        'AES-256-GCM Field Encryption & HMAC-SHA256 Key Derivation: Encrypts user preferences, guild anti-flood guardrails, and buffered messages at rest in SQLite WAL and MongoDB Atlas.',
+        'Zero-Friction Onboarding (135+ Languages): Auto-detects the Discord client locale on first use with interactive /setup & /settings wizards and localized UI dictionaries.',
+      ],
+      de: [
+        'Private Live-Translation-Threads & Ephemere Karten: Streamt gebündelte Echtzeit-Übersetzungen (3,5s Batching) in einen privaten Split-Screen-Thread inklusive Channel-Fokus, Unread-Catch-up und Stummschaltung.',
+        'Algorithmisches Pre-Filtering & Coalesced Cache: Filtert Discord-Markup, Emojis, Links und Bot-Befehle vorab; dedupliziert parallele Requests über L1-Memory-LRU und L2-MongoDB-Atlas-Cache.',
+        'AES-256-GCM-Feldverschlüsselung & HMAC-SHA256: Verschlüsselt Nutzereinstellungen, Server-Guardrails und gepufferte Nachrichten in SQLite WAL und MongoDB Atlas mit abgeleiteten Schlüsseln.',
+        'Zero-Friction-Onboarding (135+ Sprachen): Automatische Erkennung der Discord-Client-Sprache beim ersten Aufruf sowie dynamische Lokalisierung der Bot-Oberfläche.',
+      ],
+    },
+    metrics: [
+      { val: '135+ Locales', lbl: 'Auto-Onboarding' },
+      { val: '3.5s Batching', lbl: 'Live Threads' },
+      { val: 'AES-256-GCM', lbl: 'HMAC Key Deriv.' },
+      { val: 'L1 + L2 Cache', lbl: 'LRU + Mongo TTL' },
+    ],
+    stack: [
+      'TypeScript 6.0',
+      'Node.js 20+',
+      'Discord.js v14',
+      'Google Cloud Translation v2',
+      'DeepL API',
+      'AES-256-GCM / HMAC-SHA256',
+      'SQLite WAL',
+      'MongoDB Atlas',
+      'Docker',
+    ],
+    href: 'https://github.com/lukaspabst/dc-translation',
   },
   {
     id: 'zen-ui',
     index: 'VI',
+    category: 'personal',
     title: 'zeN-UI (@lukaspabst/library)',
-    role: 'Open-Source Creator',
+    role: 'Personal Open-Source Project',
+    statusPill: 'Hobby · Open Source',
     archPill: 'Design System & NPM Package',
     subtitle: {
       en: 'Modular React & TypeScript UI Component Library',
@@ -377,7 +419,7 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       en: 'React · TypeScript · Vite · SCSS · GitHub Packages',
       de: 'React · TypeScript · Vite · SCSS · GitHub Packages',
     },
-    year: 'OPEN SOURCE',
+    year: 'HOBBY · OPEN SOURCE',
     story: {
       en: 'Personal UI component library and companion documentation site packaged with Vite in ESM/UMD formats with strict TypeScript declarations.',
       de: 'Eigene UI-Komponentenbibliothek samt Dokumentations-Website, gebündelt mit Vite als ESM/UMD-Paket mit strikten TypeScript-Typdefinitionen.',

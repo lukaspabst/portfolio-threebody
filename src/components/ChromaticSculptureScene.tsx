@@ -961,40 +961,40 @@ export default function ChromaticSculptureScene(props: ChromaticSculptureProps) 
         <div
           ref={hudContainerRef}
           style={{ opacity: 0 }}
-          className="fixed top-0 left-0 w-80 rounded-xl border bg-[#090A0F]/95 backdrop-blur-xl p-4 text-[#F3EFE6] shadow-[0_12px_40px_rgba(0,0,0,0.85)] transition-opacity duration-150"
+          className="fixed top-0 left-0 w-80 rounded-xl border bg-[#0B0C10]/95 backdrop-blur-xl p-4 text-[#F6F2E9] shadow-[0_12px_40px_rgba(0,0,0,0.85)] transition-opacity duration-150"
         >
           <div className="flex items-center justify-between gap-2 mb-1">
             <span
               ref={badgeRef}
               className="font-mono text-[10px] tracking-widest uppercase font-semibold"
             />
-            <span className="font-mono text-[10px] text-white/45">LIVE TELEMETRY</span>
+            <span className="font-mono text-[10px] text-[#A69F91]">LIVE TELEMETRY</span>
           </div>
           <div
             ref={nameRef}
-            className="font-['Syne'] font-bold text-sm tracking-tight text-white leading-snug"
+            className="font-['Syne'] font-bold text-sm tracking-tight text-[#F6F2E9] leading-snug"
           />
           <div
             ref={classRef}
-            className="font-mono text-[11px] text-white/65 mb-2.5"
+            className="font-mono text-[11px] text-[#D6CFC2] mb-2.5"
           />
 
-          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 font-mono text-[11px]">
+          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#FFF3D1]/14 font-mono text-[11px]">
             <div>
-              <div className="text-[9px] uppercase tracking-wider text-white/45">Mass</div>
-              <span ref={massRef} className="text-white/95 font-medium" />
+              <div className="text-[9px] uppercase tracking-wider text-[#A69F91]">Mass</div>
+              <span ref={massRef} className="text-[#F6F2E9] font-medium" />
             </div>
             <div>
-              <div className="text-[9px] uppercase tracking-wider text-white/45">Thermal / Lum</div>
-              <span ref={tempLumRef} className="text-white/95 font-medium" />
+              <div className="text-[9px] uppercase tracking-wider text-[#A69F91]">Thermal / Lum</div>
+              <span ref={tempLumRef} className="text-[#F6F2E9] font-medium" />
             </div>
             <div>
-              <div className="text-[9px] uppercase tracking-wider text-white/45">Orbital Speed</div>
-              <span ref={velRef} className="text-[#D4AF37] font-semibold" />
+              <div className="text-[9px] uppercase tracking-wider text-[#A69F91]">Orbital Speed</div>
+              <span ref={velRef} className="text-[#F5B841] font-semibold" />
             </div>
             <div>
-              <div className="text-[9px] uppercase tracking-wider text-white/45">State</div>
-              <span ref={statusRef} className="text-white/85 truncate block" />
+              <div className="text-[9px] uppercase tracking-wider text-[#A69F91]">State</div>
+              <span ref={statusRef} className="text-[#D6CFC2] truncate block" />
             </div>
           </div>
         </div>
