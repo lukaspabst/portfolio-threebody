@@ -156,79 +156,108 @@ export default function App() {
   const renderWorkCard = (work: AtelierWork) => {
     const isSelected = activeWorkId === work.id;
     return (
-      <ZenCard
-        key={work.id}
-        variant="interactive"
-        selected={isSelected}
-        selectOnHover
-        onSelect={() => setActiveWorkId(work.id)}
-        padding="md"
-      >
-        <div className="flex flex-wrap items-center justify-between gap-2 zen-font-mono text-xs text-[var(--zen-ink-muted)] mb-3">
-          <span>
-            NO. {work.index} · {work.discipline[locale]}
-          </span>
-          <div className="flex items-center gap-2">
-            {work.statusPill && (
-              <ZenBadge tone="gold" pulse>
-                {work.statusPill[locale]}
-              </ZenBadge>
-            )}
-            {work.archPill && (
-              <ZenBadge tone="neutral">{work.archPill}</ZenBadge>
-            )}
-            <span className="text-[var(--zen-ink-secondary)]">
-              {work.year[locale]}
+      <div key={work.id} className="space-y-3">
+        <ZenCard
+          variant="interactive"
+          selected={isSelected}
+          selectOnHover
+          onSelect={() => setActiveWorkId(work.id)}
+          padding="md"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-2 zen-font-mono text-xs text-[var(--zen-ink-muted)] mb-3">
+            <span>
+              NO. {work.index} · {work.discipline[locale]}
+            </span>
+            <div className="flex flex-wrap items-center gap-2">
+              {work.statusPill && (
+                <ZenBadge tone="gold" pulse className="whitespace-nowrap">
+                  {work.statusPill[locale]}
+                </ZenBadge>
+              )}
+              {work.archPill && (
+                <ZenBadge tone="neutral" className="whitespace-nowrap">
+                  {work.archPill}
+                </ZenBadge>
+              )}
+              <span className="text-[var(--zen-ink-secondary)] whitespace-nowrap">
+                {work.year[locale]}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <h3 className="zen-font-display text-2xl sm:text-3xl font-bold text-[var(--zen-ink-primary)]">
+              {work.title}
+            </h3>
+            <span className="zen-font-serif italic text-xl text-[var(--zen-accent-primary)]">
+              {work.subtitle[locale]}
             </span>
           </div>
-        </div>
 
-        <div className="flex flex-wrap items-baseline justify-between gap-4">
-          <h3 className="zen-font-display text-2xl sm:text-3xl font-bold text-[var(--zen-ink-primary)]">
-            {work.title}
-          </h3>
-          <span className="zen-font-serif italic text-xl text-[var(--zen-accent-primary)]">
-            {work.subtitle[locale]}
-          </span>
-        </div>
+          <p className="text-sm sm:text-base text-[var(--zen-ink-secondary)] mt-4 leading-relaxed">
+            {work.story[locale]}
+          </p>
 
-        <p className="text-sm sm:text-base text-[var(--zen-ink-secondary)] mt-4 leading-relaxed">
-          {work.story[locale]}
-        </p>
+          {work.metrics && (
+            <ZenMetricStrip
+              metrics={work.metrics.map((m) => ({
+                value: m.val,
+                label: m.lbl,
+              }))}
+              className="mt-5"
+            />
+          )}
+        </ZenCard>
 
-        {work.metrics && (
-          <ZenMetricStrip
-            metrics={work.metrics.map((m) => ({
-              value: m.val,
-              label: m.lbl,
-            }))}
-            className="mt-5"
-          />
+        {isSelected && (
+          <div className="lg:hidden">
+            <ZenDossierPanel item={activeDossierItem} />
+          </div>
         )}
-      </ZenCard>
+      </div>
     );
   };
 
   return (
-    <div ref={containerRef} className="relative min-h-screen">
+    <div ref={containerRef} className="relative min-h-screen overflow-x-hidden">
       <Suspense fallback={null}>
         <ZenCosmosCanvas scrollProgressRef={scrollProgressRef} />
       </Suspense>
 
       <ZenNavbar
-        brandTitle="Lukas Pabst"
+        brandTitle={<span className="whitespace-nowrap">Lukas Pabst</span>}
         brandSubtitle="FULL STACK DEVELOPER · SISSACH, CH"
+        navSlot={
+          <>
+            <a
+              href="#exhibition"
+              className="zen-focus-ring px-3 py-1.5 rounded-lg zen-font-mono text-xs uppercase tracking-wider text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] transition-colors"
+            >
+              {locale === 'en' ? 'Projects' : 'Projekte'}
+            </a>
+            <a
+              href="#career"
+              className="zen-focus-ring px-3 py-1.5 rounded-lg zen-font-mono text-xs uppercase tracking-wider text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] transition-colors"
+            >
+              {locale === 'en' ? 'Experience' : 'Werdegang'}
+            </a>
+            <a
+              href="#contact"
+              className="zen-focus-ring px-3 py-1.5 rounded-lg zen-font-mono text-xs uppercase tracking-wider text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] transition-colors"
+            >
+              {locale === 'en' ? 'Contact' : 'Kontakt'}
+            </a>
+          </>
+        }
         actionsSlot={
           <>
             <ZenAudioController
               synth={synth}
               mode="pill"
               activeLabel={
-                locale === 'en' ? 'Lo-Fi Radio: ON' : 'Lo-Fi Radio: AN'
+                locale === 'en' ? 'Lo-Fi: ON' : 'Lo-Fi: AN'
               }
-              idleLabel={
-                locale === 'en' ? 'Lo-Fi Background' : 'Lo-Fi Musik'
-              }
+              idleLabel="Lo-Fi"
             />
 
             <ZenButton
@@ -260,7 +289,7 @@ export default function App() {
               </span>
             </div>
 
-            <h1 className="atelier-reveal zen-font-display font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight leading-[0.94] mb-8 text-[var(--zen-ink-primary)] drop-shadow-[0_4px_28px_rgba(7,7,9,0.95)]">
+            <h1 className="atelier-reveal zen-font-display font-extrabold text-[2.15rem] sm:text-7xl lg:text-8xl tracking-tight leading-[0.94] mb-8 text-[var(--zen-ink-primary)] drop-shadow-[0_4px_28px_rgba(7,7,9,0.95)]">
               {locale === 'en' ? (
                 <>
                   Architecture in{' '}
@@ -294,9 +323,9 @@ export default function App() {
           <ZenCard
             variant="static"
             padding="md"
-            className="atelier-reveal grid grid-cols-1 md:grid-cols-3 gap-6 items-center"
+            className="atelier-reveal grid grid-cols-1 lg:grid-cols-12 gap-6 items-center"
           >
-            <div>
+            <div className="lg:col-span-4">
               <div className="zen-telemetry-label">
                 {locale === 'en' ? 'CURRENT ROLE' : 'AKTUELLE ROLLE'}
               </div>
@@ -310,7 +339,7 @@ export default function App() {
               </div>
             </div>
 
-            <div>
+            <div className="lg:col-span-4">
               <div className="zen-telemetry-label">
                 {locale === 'en'
                   ? 'SIDE PROJECT (LIVE DEMO)'
@@ -324,24 +353,22 @@ export default function App() {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center md:justify-end gap-3">
+            <div className="lg:col-span-4 flex flex-wrap items-center lg:justify-end gap-3">
               <a
                 href="https://demo.journeylink.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="zen-btn-base zen-btn-primary zen-focus-ring px-6 py-3.5 text-sm"
+                className="zen-btn-base zen-btn-primary zen-focus-ring px-5 py-3 text-sm whitespace-nowrap"
               >
                 <span>
-                  {locale === 'en'
-                    ? 'Try Demo (demo.journeylink.dev)'
-                    : 'Demo (demo.journeylink.dev)'}
+                  {locale === 'en' ? 'Open Live Demo' : 'Live-Demo öffnen'}
                 </span>
                 <ZenIcon name="external-link" size="xs" />
               </a>
 
               <ZenButton
                 variant="secondary"
-                size="lg"
+                size="md"
                 mono
                 pressed={synth.active}
                 onClick={synth.toggle}
@@ -389,8 +416,7 @@ export default function App() {
                 },
                 {
                   value: 'personal',
-                  label:
-                    locale === 'en' ? 'Side Projects' : 'Privat & Hobby',
+                  label: locale === 'en' ? 'Personal' : 'Privat',
                   count: personalWorks.length,
                   icon: <ZenIcon name="code" size="xs" />,
                 },
@@ -402,7 +428,7 @@ export default function App() {
             <div className="lg:col-span-7 space-y-10 min-w-0">
               {(workFilter === 'all' || workFilter === 'enterprise') && (
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-[var(--zen-border-subtle)]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[var(--zen-border-subtle)]">
                     <div className="inline-flex items-center gap-2 zen-telemetry-label text-[var(--zen-accent-primary)]">
                       <ZenIcon name="globe" size="sm" tone="accent" />
                       <span>
@@ -423,7 +449,7 @@ export default function App() {
 
               {(workFilter === 'all' || workFilter === 'personal') && (
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-[var(--zen-border-subtle)]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[var(--zen-border-subtle)]">
                     <div className="inline-flex items-center gap-2 zen-telemetry-label text-[var(--zen-accent-secondary)]">
                       <ZenIcon name="code" size="sm" tone="accent" />
                       <span>
@@ -443,7 +469,7 @@ export default function App() {
               )}
             </div>
 
-            <div className="lg:col-span-5 lg:sticky lg:top-28 min-w-0">
+            <div className="hidden lg:block lg:col-span-5 lg:sticky lg:top-28 min-w-0">
               <ZenDossierPanel item={activeDossierItem} />
             </div>
           </div>
