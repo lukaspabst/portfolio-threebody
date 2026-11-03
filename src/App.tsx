@@ -440,12 +440,12 @@ export default function App() {
 
             <div className="flex items-center md:justify-end gap-3">
               <a
-                href="https://journeylink.dev"
+                href="https://demo.journeylink.dev"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-full bg-[#F5B841] hover:bg-[#FCD34D] text-[#070709] font-semibold text-sm inline-flex items-center gap-2 shadow-[0_0_28px_rgba(245,184,65,0.28)] transition-colors"
               >
-                {locale === 'en' ? 'Try Demo (journeylink.dev)' : 'Demo (journeylink.dev)'}
+                {locale === 'en' ? 'Try Demo (demo.journeylink.dev)' : 'Demo (demo.journeylink.dev)'}
                 <ArrowUpRight className="w-4 h-4" />
               </a>
               <button
@@ -635,8 +635,8 @@ export default function App() {
                       className="flex-1 py-3.5 px-5 rounded-full bg-[#F5B841] hover:bg-[#FCD34D] text-[#070709] font-semibold text-xs inline-flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(245,184,65,0.25)] transition-colors"
                     >
                       {locale === 'en'
-                        ? 'Interactive Demo (journeylink.dev)'
-                        : 'Interaktive Demo (journeylink.dev)'}
+                        ? 'Interactive Demo (demo.journeylink.dev)'
+                        : 'Interaktive Demo (demo.journeylink.dev)'}
                       <ArrowUpRight className="w-4 h-4" />
                     </a>
                   )}
@@ -795,12 +795,12 @@ export default function App() {
                 </button>
 
                 <a
-                  href="https://journeylink.dev"
+                  href="https://demo.journeylink.dev"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-5 py-3.5 rounded-full border border-[#F6F2E9]/32 hover:border-[#F5B841]/60 font-mono text-xs text-[#F6F2E9] inline-flex items-center gap-2 transition-colors"
                 >
-                  journeylink.dev <ArrowUpRight className="w-3.5 h-3.5 text-[#F5B841]" />
+                  demo.journeylink.dev <ArrowUpRight className="w-3.5 h-3.5 text-[#F5B841]" />
                 </a>
 
                 <a

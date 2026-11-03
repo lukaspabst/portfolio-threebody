@@ -342,7 +342,7 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       'MongoDB',
       'Docker',
     ],
-    liveUrl: 'https://journeylink.dev',
+    liveUrl: 'https://demo.journeylink.dev',
     href: 'https://github.com/Journey-Link',
   },
   {
