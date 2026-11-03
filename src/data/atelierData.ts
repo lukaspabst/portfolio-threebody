@@ -416,4 +416,62 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     ],
     href: 'https://github.com/lukaspabst/dc-translation',
   },
+  {
+    id: 'zen-ui',
+    index: 'VI',
+    category: 'personal',
+    title: 'zeN-UI // CAPRI (@zen-ui/system)',
+    role: {
+      en: 'Design System, WebGL Engine & Security Co-Pilot',
+      de: 'Design-System, WebGL-Engine & Security Co-Pilot',
+    },
+    statusPill: { en: 'Powers This Site', de: 'Basis dieser Seite' },
+    archPill: '8 Themes · Web Components · Capri Guard',
+    subtitle: {
+      en: 'Cross-framework UI library (React, Angular 20+, Vue) with built-in SQLi/XSS/Prompt-Injection firewall',
+      de: 'Framework-übergreifende UI-Library (React, Angular 20+, Vue) mit integrierter SQLi/XSS/Prompt-Injection-Firewall',
+    },
+    discipline: {
+      en: 'React 19 · Angular 20+ · Web Components · Three.js GLSL · Web Audio · CLI Security',
+      de: 'React 19 · Angular 20+ · Web Components · Three.js GLSL · Web Audio · CLI-Security',
+    },
+    year: { en: 'OPEN SOURCE · NPM', de: 'OPEN SOURCE · NPM' },
+    story: {
+      en: 'Instead of hand-coding cards, Three.js scenes, and audio synthesizers per project, I extracted @zen-ui/system as a reusable package with 8 dark and light themes, 40 vector icons, and the Capri CLI security scanner that protects inputs against SQL/NoSQL injection, XSS, and prompt injection.',
+      de: 'Statt Karten, Three.js-Szenen und Audio-Synthesizer in jedem Projekt neu zu bauen, habe ich @zen-ui/system als eigenes Paket mit 8 Dark- und Light-Themes, 40 Vektor-Icons und dem Capri-Security-Scanner (Schutz vor SQL/NoSQL-Injection, XSS und Prompt-Injection) entwickelt.',
+    },
+    engineeringNote: {
+      en: 'Ships both native React 19 primitives and framework-agnostic Custom Elements (<zen-icon>, <zen-theme-switcher>) plus the zero-runtime npx capri CLI for automated architecture docs and security audits.',
+      de: 'Liefert sowohl React-19-Komponenten als auch Custom Elements (<zen-icon>, <zen-theme-switcher>) für Angular 20+ und Vue sowie die npx capri CLI für Architektur-Dokumentation und Security-Audits.',
+    },
+    highlights: {
+      en: [
+        '8 dark & light themes with semantic CSS variables and 60fps spring physics',
+        'Real-time input firewall blocking SQL/NoSQL injection, XSS, and LLM prompt injection',
+        'Procedural Web Audio synthesizer and RK4 Three-Body WebGL cosmos canvas included',
+      ],
+      de: [
+        '8 Dark- & Light-Themes mit semantischen CSS-Variablen und 60fps-Animationen',
+        'Echtzeit-Input-Firewall gegen SQL/NoSQL-Injection, XSS und LLM-Prompt-Injection',
+        'Prozeduraler Web-Audio-Synthesizer und RK4-Three-Body-WebGL-Szene direkt integriert',
+      ],
+    },
+    metrics: [
+      { val: '8 Themes', lbl: '4 Dark + 4 Light' },
+      { val: '40 Icons', lbl: 'Zero-Dep SVG' },
+      { val: 'Capri Guard', lbl: 'SQLi/XSS/Prompt' },
+      { val: '0 Runtime Cost', lbl: 'CLI & Static' },
+    ],
+    stack: [
+      'TypeScript 5.8',
+      'React 19',
+      'Web Components',
+      'Three.js / R3F',
+      'Web Audio API',
+      'Tailwind CSS v4',
+      'Playwright',
+    ],
+    liveUrl: 'https://lukaspabst.github.io/zeN-UI/',
+    href: 'https://github.com/lukaspabst/zeN-UI',
+  },
 ];

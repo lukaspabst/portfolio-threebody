@@ -1,425 +1,331 @@
-import { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import { useEffect, useRef, useState, useMemo, Suspense } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
 import {
-  Volume2,
-  VolumeX,
-  Globe,
-  ArrowUpRight,
-  Disc3,
-  Mail,
-  Github,
-  Sparkles,
-  Check,
-  Copy,
-  CheckCircle2,
-  Briefcase,
-  GraduationCap,
-  Code2,
-} from 'lucide-react';
+  ZenCosmosCanvas,
+  ZenNavbar,
+  ZenHeading,
+  ZenCard,
+  ZenMetricStrip,
+  ZenBadge,
+  ZenButton,
+  ZenCopyButton,
+  ZenDropdown,
+  ZenSegmentedControl,
+  ZenDossierPanel,
+  ZenTimelineCard,
+  ZenAudioController,
+  ZenIcon,
+  useZenAudioSynth,
+  useZenTheme,
+  ZEN_THEMES,
+  type ZenThemeId,
+  type ZenDossierItem,
+} from '@zen-ui/system';
 import {
   ATELIER_PROFILE,
-  ATELIER_TIMELINE,
   ATELIER_WORKS,
-  type AtelierWork,
+  ATELIER_TIMELINE,
   type Locale,
-  type WorkCategory,
+  type AtelierWork,
 } from './data/atelierData';
 
-const ChromaticSculptureScene = lazy(
-  () => import('./components/ChromaticSculptureScene')
-);
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
-
-const LOFI_CHORDS: readonly (readonly number[])[] = [
-  [146.83, 220.0, 261.63, 329.63, 392.0],
-  [130.81, 196.0, 246.94, 293.66, 349.23],
-  [116.54, 174.61, 220.0, 261.63, 329.63],
-  [110.0, 164.81, 207.65, 246.94, 311.13],
-];
-
-type WorkFilter = 'all' | WorkCategory;
+type WorkFilter = 'all' | 'enterprise' | 'personal';
 
 export default function App() {
   const [locale, setLocale] = useState<Locale>('en');
   const [workFilter, setWorkFilter] = useState<WorkFilter>('all');
   const [activeWorkId, setActiveWorkId] = useState<string>(ATELIER_WORKS[0].id);
-  const [synthActive, setSynthActive] = useState(false);
-  const [copied, setCopied] = useState(false);
+
+  const { theme, setTheme } = useZenTheme();
+  const synth = useZenAudioSynth();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollProgressRef = useRef<number>(0);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const intervalRef = useRef<number | null>(null);
-  const copyTimeoutRef = useRef<number | null>(null);
 
-  const enterpriseWorks = ATELIER_WORKS.filter((w) => w.category === 'enterprise');
-  const personalWorks = ATELIER_WORKS.filter((w) => w.category === 'personal');
+  const enterpriseWorks = useMemo(
+    () => ATELIER_WORKS.filter((w) => w.category === 'enterprise'),
+    []
+  );
+  const personalWorks = useMemo(
+    () => ATELIER_WORKS.filter((w) => w.category === 'personal'),
+    []
+  );
 
-  const activeWork =
-    ATELIER_WORKS.find((w) => w.id === activeWorkId) ?? ATELIER_WORKS[0];
+  const activeWork = useMemo(
+    () => ATELIER_WORKS.find((w) => w.id === activeWorkId) ?? ATELIER_WORKS[0],
+    [activeWorkId]
+  );
 
-  const handleSelectFilter = (nextFilter: WorkFilter) => {
-    setWorkFilter(nextFilter);
-    if (nextFilter !== 'all' && activeWork.category !== nextFilter) {
-      const firstMatch = ATELIER_WORKS.find((w) => w.category === nextFilter);
-      if (firstMatch) {
-        setActiveWorkId(firstMatch.id);
-      }
+  const activeDossierItem: ZenDossierItem = useMemo(
+    () => ({
+      id: activeWork.id,
+      index: activeWork.index,
+      categoryLabel:
+        activeWork.category === 'enterprise'
+          ? locale === 'en'
+            ? 'WORK PROJECT'
+            : 'BERUFLICHES PROJEKT'
+          : locale === 'en'
+            ? 'SIDE PROJECT'
+            : 'PRIVATES PROJEKT',
+      year: activeWork.year[locale],
+      title: activeWork.title,
+      role: activeWork.role?.[locale],
+      subtitle: activeWork.subtitle[locale],
+      engineeringNote: activeWork.engineeringNote[locale],
+      engineeringLabel:
+        locale === 'en' ? 'TECHNICAL DETAILS' : 'TECHNISCHER HINTERGRUND',
+      highlights: activeWork.highlights?.[locale],
+      metrics: activeWork.metrics?.map((m) => ({
+        value: m.val,
+        label: m.lbl,
+      })),
+      tags: activeWork.stack,
+      primaryAction: activeWork.liveUrl
+        ? {
+            label:
+              locale === 'en' ? 'Open Live Demo' : 'Live-Demo öffnen',
+            href: activeWork.liveUrl,
+            icon: <ZenIcon name="globe" size="sm" />,
+          }
+        : activeWork.href
+          ? {
+              label:
+                activeWork.id === 'journeylink' ? 'GitHub Org' : 'GitHub Repo',
+              href: activeWork.href,
+              icon: <ZenIcon name="code" size="sm" />,
+            }
+          : undefined,
+      secondaryAction:
+        activeWork.liveUrl && activeWork.href
+          ? {
+              label:
+                activeWork.id === 'journeylink' ? 'GitHub Org' : 'GitHub Repo',
+              href: activeWork.href,
+              icon: <ZenIcon name="code" size="sm" />,
+            }
+          : undefined,
+    }),
+    [activeWork, locale]
+  );
+
+  const handleSelectFilter = (next: WorkFilter) => {
+    setWorkFilter(next);
+    if (next === 'enterprise' && activeWork.category !== 'enterprise') {
+      setActiveWorkId(enterpriseWorks[0].id);
+    } else if (next === 'personal' && activeWork.category !== 'personal') {
+      setActiveWorkId(personalWorks[0].id);
     }
   };
 
-  useGSAP(
-    () => {
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.4,
-        onUpdate: (self) => {
-          scrollProgressRef.current = self.progress;
-        },
-      });
-
-      const prefersReducedMotion = window.matchMedia(
-        '(prefers-reduced-motion: reduce)'
-      ).matches;
-
-      if (!prefersReducedMotion) {
-        gsap.from('.atelier-reveal', {
-          y: 45,
-          opacity: 0,
-          duration: 1.0,
-          stagger: 0.12,
-          ease: 'power3.out',
-        });
-      }
-    },
-    { scope: containerRef }
-  );
-
   useEffect(() => {
-    return () => {
-      if (copyTimeoutRef.current !== null) {
-        window.clearTimeout(copyTimeoutRef.current);
-      }
-      if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
-        void audioCtxRef.current.close();
-      }
+    const onScroll = () => {
+      const maxScroll = Math.max(
+        1,
+        document.documentElement.scrollHeight - window.innerHeight
+      );
+      scrollProgressRef.current = Math.min(
+        1,
+        Math.max(0, window.scrollY / maxScroll)
+      );
     };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    if (!synthActive) {
-      if (intervalRef.current !== null) {
-        window.clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      return;
-    }
-
-    const AudioContextClass = window.AudioContext;
-    if (!AudioContextClass) return;
-
-    if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
-      audioCtxRef.current = new AudioContextClass();
-    }
-    const ctx = audioCtxRef.current;
-    if (ctx.state === 'suspended') {
-      void ctx.resume();
-    }
-
-    const playLoFiStep = (stepIdx: number) => {
-      const now = ctx.currentTime;
-      const barStep = stepIdx % 8;
-      const chordIdx = Math.floor(stepIdx / 8) % LOFI_CHORDS.length;
-      const chord = LOFI_CHORDS[chordIdx];
-
-      if (barStep === 0 || barStep === 3) {
-        chord.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          const filter = ctx.createBiquadFilter();
-          const vibrato = ctx.createOscillator();
-          const vibGain = ctx.createGain();
-
-          osc.type = idx === 0 ? 'sine' : 'triangle';
-          osc.frequency.setValueAtTime(freq, now);
-
-          vibrato.frequency.setValueAtTime(4.2, now);
-          vibGain.gain.setValueAtTime(idx === 0 ? 0.2 : 1.1, now);
-          vibrato.connect(vibGain);
-          vibGain.connect(osc.frequency);
-
-          filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(520, now);
-
-          const peakGain = idx === 0 ? 0.042 : 0.018;
-          const dur = barStep === 0 ? 1.45 : 1.95;
-          gain.gain.setValueAtTime(0.0001, now);
-          gain.gain.linearRampToValueAtTime(peakGain, now + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-
-          osc.connect(filter);
-          filter.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(now);
-          vibrato.start(now);
-          osc.stop(now + dur + 0.05);
-          vibrato.stop(now + dur + 0.05);
-        });
-      }
-
-      if (barStep === 0 || barStep === 5) {
-        const kickOsc = ctx.createOscillator();
-        const kickGain = ctx.createGain();
-        kickOsc.type = 'sine';
-        kickOsc.frequency.setValueAtTime(108, now);
-        kickOsc.frequency.exponentialRampToValueAtTime(38, now + 0.14);
-        kickGain.gain.setValueAtTime(0.065, now);
-        kickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
-        kickOsc.connect(kickGain);
-        kickGain.connect(ctx.destination);
-        kickOsc.start(now);
-        kickOsc.stop(now + 0.26);
-      }
-
-      if (barStep === 2 || barStep === 6) {
-        const bufferSize = Math.floor(ctx.sampleRate * 0.09);
-        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.35));
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.atelier-reveal',
+        { y: 28, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          stagger: 0.08,
+          ease: 'power3.out',
         }
-        const noise = ctx.createBufferSource();
-        noise.buffer = noiseBuffer;
-        const snareFilter = ctx.createBiquadFilter();
-        snareFilter.type = 'bandpass';
-        snareFilter.frequency.setValueAtTime(1150, now);
-        const snareGain = ctx.createGain();
-        snareGain.gain.setValueAtTime(0.022, now);
-        snareGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
-        noise.connect(snareFilter);
-        snareFilter.connect(snareGain);
-        snareGain.connect(ctx.destination);
-        noise.start(now);
-      }
-    };
+      );
+    }, containerRef);
 
-    let step = 0;
-    playLoFiStep(step);
-    intervalRef.current = window.setInterval(() => {
-      step += 1;
-      playLoFiStep(step);
-    }, 410);
-
-    return () => {
-      if (intervalRef.current !== null) {
-        window.clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, [synthActive]);
-
-  const handleCopyEmail = () => {
-    void navigator.clipboard.writeText(ATELIER_PROFILE.email);
-    setCopied(true);
-    if (copyTimeoutRef.current !== null) {
-      window.clearTimeout(copyTimeoutRef.current);
-    }
-    copyTimeoutRef.current = window.setTimeout(() => setCopied(false), 2000);
-  };
-
-  useEffect(() => {
-    document.documentElement.lang = locale;
-  }, [locale]);
-
-  const bgClass = 'bg-[#070709] text-[#F6F2E9]';
-  const restingCardClass =
-    'bg-[#0B0C10]/88 border-[#FFF3D1]/16 text-[#F6F2E9] hover:border-[#FFF3D1]/32 hover:bg-[#101117]/92';
-  const activeCardClass =
-    'bg-[#101117]/94 border-[#F5B841]/70 text-[#F6F2E9] ring-1 ring-[#F5B841]/50 shadow-[0_0_32px_-8px_rgba(245,184,65,0.28)]';
-  const staticCardClass = 'bg-[#0B0C10]/90 border-[#FFF3D1]/18 text-[#F6F2E9]';
+    return () => ctx.revert();
+  }, []);
 
   const renderWorkCard = (work: AtelierWork) => {
-    const isSelected = work.id === activeWork.id;
+    const isSelected = activeWorkId === work.id;
     return (
-      <div
+      <ZenCard
         key={work.id}
-        onMouseEnter={() => setActiveWorkId(work.id)}
-        onClick={() => setActiveWorkId(work.id)}
-        role="button"
-        aria-pressed={isSelected}
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            setActiveWorkId(work.id);
-          }
-        }}
-        className={`p-6 sm:p-8 rounded-3xl border backdrop-blur-2xl transition-all cursor-pointer ${
-          isSelected ? activeCardClass : restingCardClass
-        }`}
+        variant="interactive"
+        selected={isSelected}
+        selectOnHover
+        onSelect={() => setActiveWorkId(work.id)}
+        padding="md"
       >
-        <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-[#A69F91] mb-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 zen-font-mono text-xs text-[var(--zen-ink-muted)] mb-3">
           <span>
             NO. {work.index} · {work.discipline[locale]}
           </span>
           <div className="flex items-center gap-2">
             {work.statusPill && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#F5B841]/15 text-[#FCD34D] border border-[#F5B841]/40 font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#F5B841] animate-pulse" />
+              <ZenBadge tone="gold" pulse>
                 {work.statusPill[locale]}
-              </span>
+              </ZenBadge>
             )}
             {work.archPill && (
-              <span className="px-2.5 py-0.5 rounded-full bg-[#FFF3D1]/[0.07] text-[#E6DEC8] border border-[#FFF3D1]/22">
-                {work.archPill}
-              </span>
+              <ZenBadge tone="neutral">{work.archPill}</ZenBadge>
             )}
-            <span className="text-[#D6CFC2]">{work.year[locale]}</span>
+            <span className="text-[var(--zen-ink-secondary)]">
+              {work.year[locale]}
+            </span>
           </div>
         </div>
 
         <div className="flex flex-wrap items-baseline justify-between gap-4">
-          <h3 className="font-['Syne'] text-2xl sm:text-3xl font-bold text-[#F6F2E9]">
+          <h3 className="zen-font-display text-2xl sm:text-3xl font-bold text-[var(--zen-ink-primary)]">
             {work.title}
           </h3>
-          <span className="font-['Instrument_Serif'] italic text-xl text-[#F5B841]">
+          <span className="zen-font-serif italic text-xl text-[var(--zen-accent-primary)]">
             {work.subtitle[locale]}
           </span>
         </div>
 
-        <p className="text-sm sm:text-base text-[#D6CFC2] mt-4 leading-relaxed">
+        <p className="text-sm sm:text-base text-[var(--zen-ink-secondary)] mt-4 leading-relaxed">
           {work.story[locale]}
         </p>
 
         {work.metrics && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-5 p-3 rounded-2xl bg-[#FFF3D1]/[0.04] border border-[#FFF3D1]/12 text-center">
-            {work.metrics.map((m) => (
-              <div key={m.lbl}>
-                <div className="font-['Syne'] font-bold text-sm text-[#F6F2E9]">
-                  {m.val}
-                </div>
-                <div className="font-mono text-[10px] text-[#A69F91]">{m.lbl}</div>
-              </div>
-            ))}
-          </div>
+          <ZenMetricStrip
+            metrics={work.metrics.map((m) => ({
+              value: m.val,
+              label: m.lbl,
+            }))}
+            className="mt-5"
+          />
         )}
-      </div>
+      </ZenCard>
     );
   };
 
   return (
-    <div ref={containerRef} className={`relative min-h-screen ${bgClass}`}>
+    <div ref={containerRef} className="relative min-h-screen">
       <Suspense fallback={null}>
-        <ChromaticSculptureScene scrollProgressRef={scrollProgressRef} />
+        <ZenCosmosCanvas scrollProgressRef={scrollProgressRef} />
       </Suspense>
 
-      <header className="fixed top-0 inset-x-0 z-30 border-b border-[#FFF3D1]/12 bg-[#070709]/75 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-4">
-          <div>
-            <span className="font-['Instrument_Serif'] italic text-2xl sm:text-3xl tracking-tight text-[#F6F2E9]">
-              Lukas Pabst
-            </span>
-            <span className="hidden md:inline-block ml-3 font-mono text-xs text-[#A69F91]">
-              FULL STACK DEVELOPER · SISSACH, CH
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              aria-pressed={synthActive}
-              aria-label={
-                locale === 'en'
-                  ? 'Toggle Lo-Fi background audio'
-                  : 'Lo-Fi Hintergrundmusik umschalten'
-              }
-              onClick={() => setSynthActive((prev) => !prev)}
-              className={`px-3.5 py-2 rounded-full font-mono text-xs border transition-all flex items-center gap-2 cursor-pointer ${
-                synthActive
-                  ? 'bg-[#F5B841] border-[#F5B841] text-[#070709] font-semibold shadow-[0_0_25px_rgba(245,184,65,0.35)]'
-                  : 'border-[#F6F2E9]/32 text-[#F6F2E9] hover:border-[#F5B841]/60'
-              }`}
+      <ZenNavbar
+        brandTitle="Lukas Pabst"
+        brandSubtitle="FULL STACK DEVELOPER · SISSACH, CH"
+        navSlot={
+          <>
+            <a
+              href="#exhibition"
+              className="zen-focus-ring px-3 py-1.5 rounded-xl zen-font-mono text-xs text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] hover:bg-[var(--zen-surface-subtle)] transition-colors"
             >
-              {synthActive ? (
-                <>
-                  <Volume2 className="w-3.5 h-3.5 animate-pulse" />
-                  <span>{locale === 'en' ? 'Lo-Fi Radio: ON' : 'Lo-Fi Radio: AN'}</span>
-                </>
-              ) : (
-                <>
-                  <VolumeX className="w-3.5 h-3.5 text-[#F5B841]" />
-                  <span>{locale === 'en' ? 'Lo-Fi Background' : 'Lo-Fi Musik'}</span>
-                </>
-              )}
-            </button>
+              {locale === 'en' ? 'Projects' : 'Projekte'}
+            </a>
+            <a
+              href="#career"
+              className="zen-focus-ring px-3 py-1.5 rounded-xl zen-font-mono text-xs text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] hover:bg-[var(--zen-surface-subtle)] transition-colors"
+            >
+              {locale === 'en' ? 'Experience' : 'Werdegang'}
+            </a>
+            <a
+              href="#contact"
+              className="zen-focus-ring px-3 py-1.5 rounded-xl zen-font-mono text-xs text-[var(--zen-ink-secondary)] hover:text-[var(--zen-ink-primary)] hover:bg-[var(--zen-surface-subtle)] transition-colors"
+            >
+              {locale === 'en' ? 'Contact' : 'Kontakt'}
+            </a>
+          </>
+        }
+        actionsSlot={
+          <>
+            <div className="hidden sm:block w-44">
+              <ZenDropdown<ZenThemeId>
+                ariaLabel="Select portfolio theme"
+                value={theme}
+                onChange={setTheme}
+                options={ZEN_THEMES.map((t) => ({
+                  value: t.id,
+                  label: t.name,
+                  badge: t.polarity.toUpperCase(),
+                }))}
+              />
+            </div>
 
-            <button
-              type="button"
+            <ZenAudioController
+              synth={synth}
+              mode="pill"
+              activeLabel={locale === 'en' ? 'Lo-Fi: ON' : 'Lo-Fi: AN'}
+              idleLabel={locale === 'en' ? 'Lo-Fi Radio' : 'Lo-Fi Musik'}
+            />
+
+            <ZenButton
+              variant="secondary"
+              size="sm"
+              mono
               aria-label={
                 locale === 'en'
                   ? 'Switch language to German'
                   : 'Sprache auf Englisch umschalten'
               }
               onClick={() => setLocale((prev) => (prev === 'en' ? 'de' : 'en'))}
-              className="px-3 py-1.5 rounded-full border border-[#F6F2E9]/32 hover:border-[#F5B841]/60 font-mono text-xs text-[#F6F2E9] flex items-center gap-1.5 cursor-pointer transition-colors"
+              iconLeft={<ZenIcon name="globe" size="xs" tone="accent" />}
             >
-              <Globe className="w-3.5 h-3.5 text-[#F5B841]" />
               {locale.toUpperCase()}
-            </button>
-          </div>
-        </div>
-      </header>
+            </ZenButton>
+          </>
+        }
+      />
 
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-32 pb-24">
-        <section className="min-h-[82vh] flex flex-col justify-between pb-12 border-b border-[#FFF3D1]/12">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-28 sm:pt-32 pb-24">
+        <section className="min-h-[80vh] flex flex-col justify-between pb-12 border-b border-[var(--zen-border-subtle)]">
           <div className="max-w-4xl">
-            <div className="atelier-reveal inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#F5B841] mb-6 drop-shadow-[0_2px_12px_rgba(7,7,9,0.9)]">
-              <Sparkles className="w-3.5 h-3.5" />
-              {ATELIER_PROFILE.role[locale]} · {ATELIER_PROFILE.company} · Sissach, CH
+            <div className="atelier-reveal mb-6">
+              <ZenBadge
+                tone="gold"
+                icon={<ZenIcon name="sparkles" size="xs" tone="accent" />}
+              >
+                {ATELIER_PROFILE.role[locale]} · {ATELIER_PROFILE.company} ·
+                Sissach, CH
+              </ZenBadge>
             </div>
 
-            <h1 className="atelier-reveal font-['Syne'] font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight leading-[0.94] mb-8 text-[#F6F2E9] drop-shadow-[0_4px_28px_rgba(7,7,9,0.95)]">
-              {locale === 'en' ? (
-                <>
-                  Architecture in{' '}
-                  <span className="font-['Instrument_Serif'] italic font-normal text-[#F5B841]">
-                    Motion
-                  </span>{' '}
-                  & Code.
-                </>
-              ) : (
-                <>
-                  Architektur in{' '}
-                  <span className="font-['Instrument_Serif'] italic font-normal text-[#F5B841]">
-                    Bewegung
-                  </span>{' '}
-                  & Code.
-                </>
-              )}
-            </h1>
+            <div className="atelier-reveal mb-8">
+              <ZenHeading
+                as="h1"
+                size="hero"
+                accentText={locale === 'en' ? 'Motion & Code.' : 'Bewegung & Code.'}
+              >
+                {locale === 'en' ? 'Architecture in' : 'Architektur in'}
+              </ZenHeading>
+            </div>
 
-            <div className="atelier-reveal max-w-2xl rounded-2xl bg-[#070709]/65 backdrop-blur-md border border-[#FFF3D1]/12 p-5 sm:p-6 mb-10 shadow-[0_12px_36px_rgba(0,0,0,0.65)]">
-              <p className="text-lg sm:text-xl text-[#D6CFC2] leading-relaxed">
+            <ZenCard
+              variant="static"
+              padding="md"
+              className="atelier-reveal max-w-2xl mb-10"
+            >
+              <p className="text-base sm:text-xl text-[var(--zen-ink-secondary)] leading-relaxed">
                 {ATELIER_PROFILE.statement[locale]}
               </p>
-            </div>
+            </ZenCard>
           </div>
 
-          <div className="atelier-reveal grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-[#FFF3D1]/12 bg-[#070709]/55 backdrop-blur-md rounded-2xl p-4 sm:p-6">
+          <ZenCard
+            variant="static"
+            padding="md"
+            className="atelier-reveal grid grid-cols-1 md:grid-cols-3 gap-6 items-center"
+          >
             <div>
-              <div className="font-mono text-xs text-[#A69F91]">
+              <div className="zen-telemetry-label">
                 {locale === 'en' ? 'CURRENT ROLE' : 'AKTUELLE ROLLE'}
               </div>
-              <div className="font-['Syne'] font-bold text-lg mt-1 text-[#F6F2E9]">
+              <div className="zen-font-display font-bold text-lg mt-1 text-[var(--zen-ink-primary)]">
                 Full Stack Developer · Primeo Energie
               </div>
-              <div className="text-xs text-[#D6CFC2] mt-0.5">
+              <div className="text-xs text-[var(--zen-ink-secondary)] mt-0.5">
                 {locale === 'en'
                   ? 'Tech Lead Java & Angular · SCS · Keycloak IDP (since 09/2024)'
                   : 'Fachverantwortung Java & Angular · SCS · Keycloak IDP (seit 09/2024)'}
@@ -427,110 +333,105 @@ export default function App() {
             </div>
 
             <div>
-              <div className="font-mono text-xs text-[#A69F91]">
+              <div className="zen-telemetry-label">
                 {locale === 'en'
-                  ? 'SIDE PROJECT (LIVE DEMO)'
-                  : 'PRIVATES PROJEKT (LIVE-DEMO)'}
+                  ? 'UI & ARCHITECTURE SYSTEM'
+                  : 'UI- & ARCHITEKTUR-SYSTEM'}
               </div>
-              <div className="font-['Syne'] font-bold text-lg mt-1 text-[#F6F2E9]">
-                JourneyLink (Architecture Sandbox)
+              <div className="zen-font-display font-bold text-lg mt-1 text-[var(--zen-ink-primary)]">
+                Powered by @zen-ui/system
               </div>
-              <div className="text-xs text-[#D6CFC2] mt-0.5">
-                Angular 20 Native Federation · Spring Boot · RabbitMQ
+              <div className="text-xs text-[var(--zen-ink-secondary)] mt-0.5">
+                JourneyLink (12 MFEs) · 8 Themes · Capri Security Guard
               </div>
             </div>
 
-            <div className="flex items-center md:justify-end gap-3">
+            <div className="flex flex-wrap items-center md:justify-end gap-3">
               <a
                 href="https://demo.journeylink.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3.5 rounded-full bg-[#F5B841] hover:bg-[#FCD34D] text-[#070709] font-semibold text-sm inline-flex items-center gap-2 shadow-[0_0_28px_rgba(245,184,65,0.28)] transition-colors"
+                className="zen-btn-base zen-btn-primary zen-focus-ring px-5 py-3 text-xs"
               >
-                {locale === 'en' ? 'Try Demo (demo.journeylink.dev)' : 'Demo (demo.journeylink.dev)'}
-                <ArrowUpRight className="w-4 h-4" />
+                <span>
+                  {locale === 'en' ? 'JourneyLink Demo' : 'JourneyLink Demo'}
+                </span>
+                <ZenIcon name="external-link" size="xs" />
               </a>
-              <button
-                type="button"
-                aria-pressed={synthActive}
-                onClick={() => setSynthActive((prev) => !prev)}
-                className="px-5 py-3.5 rounded-full border border-[#F6F2E9]/32 hover:border-[#F5B841]/60 font-mono text-xs text-[#F6F2E9] inline-flex items-center gap-2 cursor-pointer transition-colors"
+
+              <ZenButton
+                variant="secondary"
+                size="md"
+                mono
+                pressed={synth.active}
+                onClick={synth.toggle}
+                iconLeft={<ZenIcon name="radio" size="sm" tone="accent" />}
               >
-                <Disc3 className={`w-4 h-4 ${synthActive ? 'animate-spin text-[#F5B841]' : 'text-[#F5B841]'}`} />
-                {synthActive ? 'Pause Lo-Fi' : 'Lo-Fi Beats'}
-              </button>
+                {synth.active ? 'Pause Lo-Fi' : 'Lo-Fi Beats'}
+              </ZenButton>
             </div>
-          </div>
+          </ZenCard>
         </section>
 
         <section id="exhibition" className="py-24">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-            <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#F5B841]">
-                {locale === 'en'
+            <ZenHeading
+              as="h2"
+              size="display"
+              eyebrow={
+                locale === 'en'
                   ? 'WORK & SIDE PROJECTS'
-                  : 'BERUFLICHE PROJEKTE & EIGENE TOOLS'}
-              </span>
-              <h2 className="font-['Syne'] text-4xl sm:text-6xl font-bold mt-2 text-[#F6F2E9]">
-                {locale === 'en' ? 'Projects' : 'Projekte'}
-              </h2>
-            </div>
-
-            <div
-              role="group"
-              aria-label={locale === 'en' ? 'Filter projects by category' : 'Projekte nach Kategorie filtern'}
-              className="inline-flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-[#0B0C10]/90 border border-[#FFF3D1]/16 backdrop-blur-xl self-start lg:self-auto"
+                  : 'BERUFLICHE PROJEKTE & EIGENE TOOLS'
+              }
+              eyebrowIcon={<ZenIcon name="layers" size="xs" tone="accent" />}
             >
-              <button
-                type="button"
-                onClick={() => handleSelectFilter('all')}
-                className={`px-4 py-2 rounded-xl font-mono text-xs transition-all cursor-pointer ${
-                  workFilter === 'all'
-                    ? 'bg-[#F5B841] text-[#070709] font-semibold shadow-sm'
-                    : 'text-[#D6CFC2] hover:text-[#F6F2E9]'
-                }`}
-              >
-                {locale === 'en' ? 'All (5)' : 'Alle (5)'}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSelectFilter('enterprise')}
-                className={`px-4 py-2 rounded-xl font-mono text-xs inline-flex items-center gap-1.5 transition-all cursor-pointer ${
-                  workFilter === 'enterprise'
-                    ? 'bg-[#F5B841] text-[#070709] font-semibold shadow-sm'
-                    : 'text-[#D6CFC2] hover:text-[#F6F2E9]'
-                }`}
-              >
-                <Briefcase className="w-3.5 h-3.5" />
-                {locale === 'en' ? 'Work (3)' : 'Beruflich (3)'}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSelectFilter('personal')}
-                className={`px-4 py-2 rounded-xl font-mono text-xs inline-flex items-center gap-1.5 transition-all cursor-pointer ${
-                  workFilter === 'personal'
-                    ? 'bg-[#F5B841] text-[#070709] font-semibold shadow-sm'
-                    : 'text-[#D6CFC2] hover:text-[#F6F2E9]'
-                }`}
-              >
-                <Code2 className="w-3.5 h-3.5" />
-                {locale === 'en' ? 'Side Projects (2)' : 'Privat & Hobby (2)'}
-              </button>
-            </div>
+              {locale === 'en' ? 'Projects' : 'Projekte'}
+            </ZenHeading>
+
+            <ZenSegmentedControl<WorkFilter>
+              ariaLabel={
+                locale === 'en'
+                  ? 'Filter projects by category'
+                  : 'Projekte nach Kategorie filtern'
+              }
+              value={workFilter}
+              onChange={handleSelectFilter}
+              items={[
+                {
+                  value: 'all',
+                  label: locale === 'en' ? 'All' : 'Alle',
+                  count: ATELIER_WORKS.length,
+                },
+                {
+                  value: 'enterprise',
+                  label: locale === 'en' ? 'Work' : 'Beruflich',
+                  count: enterpriseWorks.length,
+                  icon: <ZenIcon name="globe" size="xs" />,
+                },
+                {
+                  value: 'personal',
+                  label: locale === 'en' ? 'Open Source' : 'Privat & Open Source',
+                  count: personalWorks.length,
+                  icon: <ZenIcon name="code" size="xs" />,
+                },
+              ]}
+            />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-7 space-y-10">
+            <div className="lg:col-span-7 space-y-10 min-w-0">
               {(workFilter === 'all' || workFilter === 'enterprise') && (
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-[#FFF3D1]/14">
-                    <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#F5B841]">
-                      <Briefcase className="w-4 h-4" />
-                      {locale === 'en'
-                        ? '01 // Work Projects'
-                        : '01 // Berufliche Projekte'}
+                  <div className="flex items-center justify-between pb-3 border-b border-[var(--zen-border-subtle)]">
+                    <div className="inline-flex items-center gap-2 zen-telemetry-label text-[var(--zen-accent-primary)]">
+                      <ZenIcon name="globe" size="sm" tone="accent" />
+                      <span>
+                        {locale === 'en'
+                          ? '01 // Work Projects'
+                          : '01 // Berufliche Projekte'}
+                      </span>
                     </div>
-                    <span className="font-mono text-xs text-[#A69F91]">
+                    <span className="zen-telemetry-label">
                       Primeo Energie · Finanz-Data · DHBW
                     </span>
                   </div>
@@ -542,14 +443,16 @@ export default function App() {
 
               {(workFilter === 'all' || workFilter === 'personal') && (
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-[#FFF3D1]/14">
-                    <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#FB923C]">
-                      <Code2 className="w-4 h-4" />
-                      {locale === 'en'
-                        ? '02 // Side Projects & Open Source'
-                        : '02 // Eigene Projekte & Open Source'}
+                  <div className="flex items-center justify-between pb-3 border-b border-[var(--zen-border-subtle)]">
+                    <div className="inline-flex items-center gap-2 zen-telemetry-label text-[var(--zen-accent-secondary)]">
+                      <ZenIcon name="code" size="sm" tone="accent" />
+                      <span>
+                        {locale === 'en'
+                          ? '02 // Side Projects & Open Source'
+                          : '02 // Eigene Projekte & Open Source'}
+                      </span>
                     </div>
-                    <span className="font-mono text-xs text-[#A69F91]">
+                    <span className="zen-telemetry-label">
                       {locale === 'en' ? 'Personal Builds' : 'Freizeit & Hobby'}
                     </span>
                   </div>
@@ -560,125 +463,31 @@ export default function App() {
               )}
             </div>
 
-            <div className="lg:col-span-5 lg:sticky lg:top-28">
-              <div
-                className={`p-8 rounded-3xl border backdrop-blur-2xl shadow-2xl ${activeCardClass}`}
-              >
-                <div className="flex items-center justify-between font-mono text-xs text-[#F5B841] mb-3">
-                  <span>
-                    {activeWork.category === 'enterprise'
-                      ? locale === 'en'
-                        ? 'WORK PROJECT'
-                        : 'BERUFLICHES PROJEKT'
-                      : locale === 'en'
-                        ? 'SIDE PROJECT'
-                        : 'PRIVATES PROJEKT'}{' '}
-                    // {activeWork.index}
-                  </span>
-                  <span>{activeWork.year[locale]}</span>
-                </div>
-
-                <h3 className="font-['Instrument_Serif'] italic text-4xl sm:text-5xl mb-1 text-[#F6F2E9]">
-                  {activeWork.title}
-                </h3>
-                {activeWork.role && (
-                  <div className="font-mono text-xs text-[#FB923C] mb-2">
-                    {activeWork.role[locale]}
-                  </div>
-                )}
-                <div className="font-mono text-xs text-[#A69F91] mb-5">
-                  {activeWork.subtitle[locale]}
-                </div>
-
-                {activeWork.metrics && (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5 p-3 rounded-2xl bg-[#FFF3D1]/[0.04] border border-[#FFF3D1]/12 text-center">
-                    {activeWork.metrics.map((m) => (
-                      <div key={m.lbl}>
-                        <div className="font-bold text-xs text-[#F6F2E9]">{m.val}</div>
-                        <div className="font-mono text-[10px] text-[#A69F91]">{m.lbl}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="p-4 rounded-2xl bg-[#FFF3D1]/[0.04] border border-[#FFF3D1]/14 mb-5">
-                  <div className="font-mono text-[11px] text-[#FB923C] mb-1">
-                    {locale === 'en' ? 'TECHNICAL DETAILS' : 'TECHNISCHER HINTERGRUND'}
-                  </div>
-                  <p className="text-sm leading-relaxed text-[#D6CFC2]">
-                    {activeWork.engineeringNote[locale]}
-                  </p>
-                </div>
-
-                {activeWork.highlights && (
-                  <div className="space-y-2 mb-6">
-                    {activeWork.highlights[locale].map((item) => (
-                      <div key={item} className="flex items-start gap-2 text-xs text-[#D6CFC2]">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#F5B841] shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {activeWork.stack.map((item) => (
-                    <span
-                      key={item}
-                      className="px-3 py-1 rounded-full border border-[#FFF3D1]/18 bg-[#FFF3D1]/[0.03] font-mono text-xs text-[#E6DEC8]"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-3">
-                  {activeWork.liveUrl && (
-                    <a
-                      href={activeWork.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 py-3.5 px-5 rounded-full bg-[#F5B841] hover:bg-[#FCD34D] text-[#070709] font-semibold text-xs inline-flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(245,184,65,0.25)] transition-colors"
-                    >
-                      {locale === 'en'
-                        ? 'Live Demo (demo.journeylink.dev)'
-                        : 'Live-Demo (demo.journeylink.dev)'}
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-                  )}
-                  {activeWork.href && (
-                    <a
-                      href={activeWork.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`flex-1 py-3.5 px-5 rounded-full font-semibold text-xs inline-flex items-center justify-center gap-2 transition-colors ${
-                        activeWork.liveUrl
-                          ? 'bg-[#FFF3D1]/[0.08] hover:bg-[#FFF3D1]/[0.14] text-[#F6F2E9] border border-[#F6F2E9]/30 hover:border-[#F5B841]/60'
-                          : 'bg-[#F5B841] hover:bg-[#FCD34D] text-[#070709] shadow-[0_0_24px_rgba(245,184,65,0.25)]'
-                      }`}
-                    >
-                      <Github className="w-4 h-4" />
-                      {activeWork.id === 'journeylink' ? 'GitHub Org' : 'GitHub Repo'}
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
+            <div className="lg:col-span-5 lg:sticky lg:top-28 min-w-0">
+              <ZenDossierPanel item={activeDossierItem} />
             </div>
           </div>
         </section>
 
-        <section id="career" className="py-24 border-t border-[#FFF3D1]/12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14">
-            <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#F5B841]">
-                {locale === 'en' ? 'BACKGROUND & CV' : 'WERDEGANG & AUSBILDUNG'}
-              </span>
-              <h2 className="font-['Syne'] text-4xl sm:text-6xl font-bold mt-2 text-[#F6F2E9]">
-                {locale === 'en' ? 'Experience & Education' : 'Berufserfahrung & Studium'}
-              </h2>
-            </div>
-            <p className="text-sm text-[#D6CFC2] max-w-sm mt-3 md:mt-0">
+        <section
+          id="career"
+          className="py-24 border-t border-[var(--zen-border-subtle)]"
+        >
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
+            <ZenHeading
+              as="h2"
+              size="display"
+              eyebrow={
+                locale === 'en' ? 'BACKGROUND & CV' : 'WERDEGANG & AUSBILDUNG'
+              }
+              eyebrowIcon={<ZenIcon name="activity" size="xs" tone="accent" />}
+            >
+              {locale === 'en'
+                ? 'Experience & Education'
+                : 'Berufserfahrung & Studium'}
+            </ZenHeading>
+
+            <p className="text-sm text-[var(--zen-ink-secondary)] max-w-sm">
               {locale === 'en'
                 ? 'Dual Bachelor in Business Informatics (B.Sc.) at DHBW Stuttgart, followed by backend and full-stack development in Germany and Switzerland.'
                 : 'Duales Studium der Wirtschaftsinformatik (B.Sc.) an der DHBW Stuttgart, gefolgt von Backend- und Full-Stack-Entwicklung in Deutschland und der Schweiz.'}
@@ -687,145 +496,104 @@ export default function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {ATELIER_TIMELINE.map((entry) => (
-              <div
+              <ZenTimelineCard
                 key={`${entry.institution}-${entry.period.en}`}
-                className={`p-6 sm:p-8 rounded-3xl border backdrop-blur-2xl flex flex-col justify-between ${staticCardClass}`}
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 font-mono text-xs mb-4">
-                    <span className="inline-flex items-center gap-1.5 text-[#F5B841]">
-                      {entry.category === 'experience' ? (
-                        <Briefcase className="w-3.5 h-3.5" />
-                      ) : (
-                        <GraduationCap className="w-3.5 h-3.5" />
-                      )}
-                      {entry.period[locale]}
-                    </span>
-                    <span className="text-[#A69F91]">{entry.location[locale]}</span>
-                  </div>
-
-                  <h3 className="font-['Syne'] text-xl sm:text-2xl font-bold text-[#F6F2E9]">
-                    {entry.title[locale]}
-                  </h3>
-                  <div className="font-['Instrument_Serif'] italic text-xl text-[#F5B841] mt-0.5 mb-3">
-                    {entry.institution}
-                  </div>
-
-                  <p className="text-sm text-[#D6CFC2] leading-relaxed mb-4">
-                    {entry.summary[locale]}
-                  </p>
-
-                  {entry.bullets && (
-                    <ul className="space-y-1.5 mb-5">
-                      {entry.bullets[locale].map((bullet) => (
-                        <li
-                          key={bullet}
-                          className="flex items-start gap-2 text-xs text-[#D6CFC2]"
-                        >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#F5B841] shrink-0 mt-0.5" />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-3 border-t border-[#FFF3D1]/12">
-                  {entry.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2.5 py-1 rounded-full border border-[#FFF3D1]/18 bg-[#FFF3D1]/[0.03] font-mono text-[11px] text-[#E6DEC8]"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                period={entry.period[locale]}
+                location={entry.location[locale]}
+                title={entry.title[locale]}
+                institution={entry.institution}
+                summary={entry.summary[locale]}
+                bullets={entry.bullets?.[locale]}
+                tags={entry.tags}
+                icon={
+                  <ZenIcon
+                    name={
+                      entry.category === 'experience' ? 'globe' : 'sparkles'
+                    }
+                    size="xs"
+                    tone="accent"
+                  />
+                }
+              />
             ))}
           </div>
         </section>
 
-        <section className="py-20 border-t border-[#FFF3D1]/12">
-          <div className={`p-8 sm:p-14 rounded-3xl border backdrop-blur-2xl ${staticCardClass}`}>
+        <section
+          id="contact"
+          className="py-20 border-t border-[var(--zen-border-subtle)]"
+        >
+          <ZenCard variant="static" padding="lg">
             <div className="max-w-3xl">
-              <span className="font-mono text-xs text-[#F5B841]">
-                {locale === 'en'
-                  ? 'CONTACT · SISSACH, SWITZERLAND'
-                  : 'KONTAKT · SISSACH, SCHWEIZ'}
-              </span>
-              <h2 className="font-['Syne'] text-4xl sm:text-6xl font-bold mt-3 mb-6 text-[#F6F2E9]">
-                {locale === 'en' ? (
-                  <>
-                    Let&apos;s{' '}
-                    <span className="font-['Instrument_Serif'] italic font-normal text-[#F5B841]">
-                      talk
-                    </span>
-                    .
-                  </>
-                ) : (
-                  <>
-                    Schreib{' '}
-                    <span className="font-['Instrument_Serif'] italic font-normal text-[#F5B841]">
-                      mir
-                    </span>
-                    .
-                  </>
-                )}
-              </h2>
-              <p className="text-base sm:text-lg text-[#D6CFC2] mb-8 leading-relaxed">
+              <ZenHeading
+                as="h2"
+                size="display"
+                eyebrow={
+                  locale === 'en'
+                    ? 'CONTACT · SISSACH, SWITZERLAND'
+                    : 'KONTAKT · SISSACH, SCHWEIZ'
+                }
+                eyebrowIcon={<ZenIcon name="terminal" size="xs" tone="accent" />}
+                accentText={locale === 'en' ? 'talk.' : 'mir.'}
+                className="mb-6"
+              >
+                {locale === 'en' ? "Let's" : 'Schreib'}
+              </ZenHeading>
+
+              <p className="text-base sm:text-lg text-[var(--zen-ink-secondary)] mb-8 leading-relaxed">
                 {locale === 'en'
                   ? "I'm 25, originally from Thuringia, and now live in Sissach near Basel. I studied Business Informatics (B.Sc.) at DHBW Stuttgart and speak native German and fluent English. When I'm not writing code, I'm usually in the gym lifting weights or reading."
                   : 'Ich bin 25, komme ursprünglich aus Thüringen und lebe heute in Sissach bei Basel. Nach meinem dualen Wirtschaftsinformatik-Studium (B.Sc.) an der DHBW Stuttgart hat es mich in die Schweiz gezogen. Wenn ich nicht am Code sitze, findet man mich meistens beim Kraftsport im Gym oder mit einem Buch.'}
               </p>
 
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap items-center gap-3.5">
                 <a
                   href={`mailto:${ATELIER_PROFILE.email}`}
-                  className="px-6 py-3.5 rounded-full bg-[#F5B841] hover:bg-[#FCD34D] text-[#070709] font-semibold text-sm inline-flex items-center gap-2 shadow-[0_0_24px_rgba(245,184,65,0.25)] transition-colors"
+                  className="zen-btn-base zen-btn-primary zen-focus-ring px-6 py-3.5 text-sm"
                 >
-                  <Mail className="w-4 h-4" />
-                  {ATELIER_PROFILE.email}
+                  <ZenIcon name="terminal" size="sm" />
+                  <span>{ATELIER_PROFILE.email}</span>
                 </a>
 
-                <button
-                  type="button"
-                  onClick={handleCopyEmail}
-                  className="px-5 py-3.5 rounded-full border border-[#F6F2E9]/32 hover:border-[#F5B841]/60 font-mono text-xs text-[#F6F2E9] inline-flex items-center gap-2 cursor-pointer transition-colors"
-                >
-                  {copied ? (
-                    <Check className="w-4 h-4 text-[#F5B841]" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-[#F5B841]" />
-                  )}
-                  {copied
-                    ? locale === 'en'
-                      ? 'COPIED'
-                      : 'KOPIERT'
-                    : locale === 'en'
-                      ? 'COPY EMAIL'
-                      : 'E-MAIL KOPIEREN'}
-                </button>
+                <ZenCopyButton
+                  value={ATELIER_PROFILE.email}
+                  label={locale === 'en' ? 'COPY EMAIL' : 'E-MAIL KOPIEREN'}
+                  copiedLabel={locale === 'en' ? 'COPIED' : 'KOPIERT'}
+                  size="md"
+                />
 
                 <a
                   href="https://demo.journeylink.dev"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 py-3.5 rounded-full border border-[#F6F2E9]/32 hover:border-[#F5B841]/60 font-mono text-xs text-[#F6F2E9] inline-flex items-center gap-2 transition-colors"
+                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3 text-xs zen-font-mono"
                 >
-                  demo.journeylink.dev <ArrowUpRight className="w-3.5 h-3.5 text-[#F5B841]" />
+                  <span>demo.journeylink.dev</span>
+                  <ZenIcon name="external-link" size="xs" tone="accent" />
+                </a>
+
+                <a
+                  href="https://lukaspabst.github.io/zeN-UI/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3 text-xs zen-font-mono"
+                >
+                  <span>@zen-ui/system</span>
+                  <ZenIcon name="external-link" size="xs" tone="accent" />
                 </a>
 
                 <a
                   href={ATELIER_PROFILE.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 py-3.5 rounded-full border border-[#F6F2E9]/32 hover:border-[#F5B841]/60 font-mono text-xs text-[#F6F2E9] inline-flex items-center gap-2 transition-colors"
+                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3 text-xs zen-font-mono"
                 >
-                  GitHub <ArrowUpRight className="w-3.5 h-3.5 text-[#F5B841]" />
+                  <span>GitHub</span>
+                  <ZenIcon name="external-link" size="xs" tone="accent" />
                 </a>
               </div>
             </div>
-          </div>
+          </ZenCard>
         </section>
       </main>
     </div>
