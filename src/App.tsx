@@ -79,13 +79,9 @@ export default function App() {
       primaryAction: activeWork.liveUrl
         ? {
             label:
-              activeWork.id === 'journeylink'
-                ? locale === 'en'
-                  ? 'Live Demo (demo.journeylink.dev)'
-                  : 'Live-Demo (demo.journeylink.dev)'
-                : locale === 'en'
-                  ? 'Open Live Demo'
-                  : 'Live-Demo öffnen',
+              locale === 'en'
+                ? `Live Demo (${new URL(activeWork.liveUrl).host})`
+                : `Live-Demo (${new URL(activeWork.liveUrl).host})`,
             href: activeWork.liveUrl,
             icon: <ZenIcon name="globe" size="sm" />,
           }

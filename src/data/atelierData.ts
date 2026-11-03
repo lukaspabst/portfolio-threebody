@@ -471,7 +471,65 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       'Tailwind CSS v4',
       'Playwright',
     ],
-    liveUrl: 'https://lukaspabst.github.io/zeN-UI/',
+    liveUrl: 'https://ui.lpabst.dev',
     href: 'https://github.com/lukaspabst/zeN-UI',
+  },
+  {
+    id: 'zen-terminal',
+    index: 'VII',
+    category: 'personal',
+    title: 'zeN-Terminal',
+    role: {
+      en: 'PowerShell, Windows Terminal & CMD Theme Engine',
+      de: 'PowerShell-, Windows-Terminal- & CMD-Theme-Engine',
+    },
+    statusPill: { en: 'Live Workbench', de: 'Live-Workbench' },
+    archPill: 'PowerShell · Windows Terminal · Capri Guard',
+    subtitle: {
+      en: 'Brings all 8 @zen-ui/system themes and the Capri Guard CLI firewall into PowerShell & Windows Terminal',
+      de: 'Bringt alle 8 @zen-ui/system-Themes und die Capri-Guard-CLI-Firewall in PowerShell & Windows Terminal',
+    },
+    discipline: {
+      en: 'PowerShell 7 · Windows Terminal · ANSI TrueColor · React 19 Workbench',
+      de: 'PowerShell 7 · Windows Terminal · ANSI TrueColor · React 19 Workbench',
+    },
+    year: { en: 'SIDE PROJECT · CLI', de: 'HOBBY · CLI' },
+    story: {
+      en: 'I wanted my local PowerShell prompt, PSReadLine syntax highlighting, and Windows Terminal color schemes to match my web projects. zeN-Terminal lets me switch all of them at once with a single zen-theme command and includes an interactive web workbench to preview palettes and test CLI payloads.',
+      de: 'Ich wollte meinen lokalen PowerShell-Prompt, das PSReadLine-Syntax-Highlighting und mein Windows-Terminal-Farbschema an meine Web-Projekte anpassen. Mit zeN-Terminal schalte ich alles gleichzeitig per zen-theme-Befehl um – inklusive interaktiver Web-Workbench zum Testen der Themes und CLI-Payloads.',
+    },
+    engineeringNote: {
+      en: 'The PowerShell installer backs up your existing $PROFILE and Windows Terminal settings.json, injects TrueColor ANSI prompt hooks and PSReadLine token colors, and registers the capri-guard command for local SQLi/XSS/Prompt-Injection checks.',
+      de: 'Der PowerShell-Installer legt vorab Backups von $PROFILE und der Windows-Terminal-settings.json an, richtet TrueColor-ANSI-Prompts sowie PSReadLine-Farben ein und stellt den Befehl capri-guard für lokale SQLi/XSS/Prompt-Injection-Checks bereit.',
+    },
+    highlights: {
+      en: [
+        'One-command PowerShell & Windows Terminal theme switching across all 8 @zen-ui/system palettes',
+        'Built-in capri-guard CLI command to inspect shell strings for SQLi, XSS, and prompt injection',
+        'Interactive web workbench at terminal.lpabst.dev for live theme previews and one-liner copy',
+      ],
+      de: [
+        'Wechsel des PowerShell- und Windows-Terminal-Themes über alle 8 @zen-ui/system-Paletten mit einem Befehl',
+        'Integrierter capri-guard-Befehl zum Prüfen von Strings auf SQLi, XSS und Prompt-Injection im Terminal',
+        'Interaktive Web-Workbench unter terminal.lpabst.dev mit Live-Vorschau für alle Themes',
+      ],
+    },
+    metrics: [
+      { val: '8 Themes', lbl: 'TrueColor ANSI' },
+      { val: '3 Shells', lbl: 'PWSH / WT / CMD' },
+      { val: 'capri-guard', lbl: 'CLI Scanner' },
+      { val: 'Auto-Backup', lbl: 'Safe Uninstall' },
+    ],
+    stack: [
+      'PowerShell',
+      'Windows Terminal',
+      '@zen-ui/system',
+      'React 19',
+      'TypeScript 5.8',
+      'Tailwind CSS v4',
+      'Docker',
+    ],
+    liveUrl: 'https://terminal.lpabst.dev',
+    href: 'https://github.com/lukaspabst/zeN-Terminal',
   },
 ];
