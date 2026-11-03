@@ -266,13 +266,13 @@ export default function App() {
       >
         <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-[#A69F91] mb-3">
           <span>
-            NO. {work.index} — {work.discipline[locale]}
+            NO. {work.index} · {work.discipline[locale]}
           </span>
           <div className="flex items-center gap-2">
             {work.statusPill && (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#F5B841]/15 text-[#FCD34D] border border-[#F5B841]/40 font-semibold">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#F5B841] animate-pulse" />
-                {work.statusPill}
+                {work.statusPill[locale]}
               </span>
             )}
             {work.archPill && (
@@ -280,7 +280,7 @@ export default function App() {
                 {work.archPill}
               </span>
             )}
-            <span className="text-[#D6CFC2]">{work.year}</span>
+            <span className="text-[#D6CFC2]">{work.year[locale]}</span>
           </div>
         </div>
 
@@ -413,13 +413,15 @@ export default function App() {
 
           <div className="atelier-reveal grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-[#FFF3D1]/12 bg-[#070709]/55 backdrop-blur-md rounded-2xl p-4 sm:p-6">
             <div>
-              <div className="font-mono text-xs text-[#A69F91]">CURRENT APPOINTMENT</div>
+              <div className="font-mono text-xs text-[#A69F91]">
+                {locale === 'en' ? 'CURRENT ROLE' : 'AKTUELLE ROLLE'}
+              </div>
               <div className="font-['Syne'] font-bold text-lg mt-1 text-[#F6F2E9]">
                 Full Stack Developer · Primeo Energie
               </div>
               <div className="text-xs text-[#D6CFC2] mt-0.5">
                 {locale === 'en'
-                  ? 'Technical Lead Java & Angular · SCS · Keycloak IDP (09/2024 – Present)'
+                  ? 'Tech Lead Java & Angular · SCS · Keycloak IDP (since 09/2024)'
                   : 'Fachverantwortung Java & Angular · SCS · Keycloak IDP (seit 09/2024)'}
               </div>
             </div>
@@ -427,8 +429,8 @@ export default function App() {
             <div>
               <div className="font-mono text-xs text-[#A69F91]">
                 {locale === 'en'
-                  ? 'PERSONAL HOBBY PROJECT (DEMO)'
-                  : 'PERSÖNLICHES HOBBYPROJEKT (DEMO)'}
+                  ? 'SIDE PROJECT (LIVE DEMO)'
+                  : 'PRIVATES PROJEKT (LIVE-DEMO)'}
               </div>
               <div className="font-['Syne'] font-bold text-lg mt-1 text-[#F6F2E9]">
                 JourneyLink (Architecture Sandbox)
@@ -466,11 +468,11 @@ export default function App() {
             <div>
               <span className="font-mono text-xs uppercase tracking-widest text-[#F5B841]">
                 {locale === 'en'
-                  ? 'ENTERPRISE WORK & PERSONAL HOBBY PROJECTS'
-                  : 'BERUFLICHE PROJEKTE & PERSÖNLICHE HOBBY-ARBEITEN'}
+                  ? 'WORK & SIDE PROJECTS'
+                  : 'BERUFLICHE PROJEKTE & EIGENE TOOLS'}
               </span>
               <h2 className="font-['Syne'] text-4xl sm:text-6xl font-bold mt-2 text-[#F6F2E9]">
-                {locale === 'en' ? 'Selected Works' : 'Ausgewählte Projekte'}
+                {locale === 'en' ? 'Projects' : 'Projekte'}
               </h2>
             </div>
 
@@ -488,7 +490,7 @@ export default function App() {
                     : 'text-[#D6CFC2] hover:text-[#F6F2E9]'
                 }`}
               >
-                {locale === 'en' ? 'All Works (5)' : 'Alle Projekte (5)'}
+                {locale === 'en' ? 'All (5)' : 'Alle (5)'}
               </button>
               <button
                 type="button"
@@ -500,7 +502,7 @@ export default function App() {
                 }`}
               >
                 <Briefcase className="w-3.5 h-3.5" />
-                {locale === 'en' ? 'Enterprise & Work (3)' : 'Berufliche Projekte (3)'}
+                {locale === 'en' ? 'Work (3)' : 'Beruflich (3)'}
               </button>
               <button
                 type="button"
@@ -512,7 +514,7 @@ export default function App() {
                 }`}
               >
                 <Code2 className="w-3.5 h-3.5" />
-                {locale === 'en' ? 'Personal & Hobby (2)' : 'Hobby & Open Source (2)'}
+                {locale === 'en' ? 'Side Projects (2)' : 'Privat & Hobby (2)'}
               </button>
             </div>
           </div>
@@ -525,8 +527,8 @@ export default function App() {
                     <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#F5B841]">
                       <Briefcase className="w-4 h-4" />
                       {locale === 'en'
-                        ? '01 // Enterprise & Professional Work'
-                        : '01 // Berufliche Enterprise-Projekte'}
+                        ? '01 // Work Projects'
+                        : '01 // Berufliche Projekte'}
                     </div>
                     <span className="font-mono text-xs text-[#A69F91]">
                       Primeo Energie · Finanz-Data · DHBW
@@ -544,11 +546,11 @@ export default function App() {
                     <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#FB923C]">
                       <Code2 className="w-4 h-4" />
                       {locale === 'en'
-                        ? '02 // Personal Hobby & Open-Source Projects'
-                        : '02 // Persönliche Hobby- & Open-Source-Projekte'}
+                        ? '02 // Side Projects & Open Source'
+                        : '02 // Eigene Projekte & Open Source'}
                     </div>
                     <span className="font-mono text-xs text-[#A69F91]">
-                      Sandbox Demos · GitHub Open Source
+                      {locale === 'en' ? 'Personal Builds' : 'Freizeit & Hobby'}
                     </span>
                   </div>
                   <div className="space-y-4">
@@ -565,11 +567,15 @@ export default function App() {
                 <div className="flex items-center justify-between font-mono text-xs text-[#F5B841] mb-3">
                   <span>
                     {activeWork.category === 'enterprise'
-                      ? 'ENTERPRISE DOSSIER'
-                      : 'PERSONAL PROJECT DOSSIER'}{' '}
+                      ? locale === 'en'
+                        ? 'WORK PROJECT'
+                        : 'BERUFLICHES PROJEKT'
+                      : locale === 'en'
+                        ? 'SIDE PROJECT'
+                        : 'PRIVATES PROJEKT'}{' '}
                     // {activeWork.index}
                   </span>
-                  <span>{activeWork.year}</span>
+                  <span>{activeWork.year[locale]}</span>
                 </div>
 
                 <h3 className="font-['Instrument_Serif'] italic text-4xl sm:text-5xl mb-1 text-[#F6F2E9]">
@@ -577,7 +583,7 @@ export default function App() {
                 </h3>
                 {activeWork.role && (
                   <div className="font-mono text-xs text-[#FB923C] mb-2">
-                    {activeWork.role}
+                    {activeWork.role[locale]}
                   </div>
                 )}
                 <div className="font-mono text-xs text-[#A69F91] mb-5">
@@ -597,7 +603,7 @@ export default function App() {
 
                 <div className="p-4 rounded-2xl bg-[#FFF3D1]/[0.04] border border-[#FFF3D1]/14 mb-5">
                   <div className="font-mono text-[11px] text-[#FB923C] mb-1">
-                    SYSTEM ARCHITECTURE NOTE
+                    {locale === 'en' ? 'TECHNICAL DETAILS' : 'TECHNISCHER HINTERGRUND'}
                   </div>
                   <p className="text-sm leading-relaxed text-[#D6CFC2]">
                     {activeWork.engineeringNote[locale]}
@@ -635,8 +641,8 @@ export default function App() {
                       className="flex-1 py-3.5 px-5 rounded-full bg-[#F5B841] hover:bg-[#FCD34D] text-[#070709] font-semibold text-xs inline-flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(245,184,65,0.25)] transition-colors"
                     >
                       {locale === 'en'
-                        ? 'Interactive Demo (demo.journeylink.dev)'
-                        : 'Interaktive Demo (demo.journeylink.dev)'}
+                        ? 'Live Demo (demo.journeylink.dev)'
+                        : 'Live-Demo (demo.journeylink.dev)'}
                       <ArrowUpRight className="w-4 h-4" />
                     </a>
                   )}
@@ -652,7 +658,7 @@ export default function App() {
                       }`}
                     >
                       <Github className="w-4 h-4" />
-                      {activeWork.id === 'journeylink' ? 'GitHub Org' : 'Source on GitHub'}
+                      {activeWork.id === 'journeylink' ? 'GitHub Org' : 'GitHub Repo'}
                       <ArrowUpRight className="w-4 h-4" />
                     </a>
                   )}
@@ -666,9 +672,7 @@ export default function App() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-14">
             <div>
               <span className="font-mono text-xs uppercase tracking-widest text-[#F5B841]">
-                {locale === 'en'
-                  ? 'CURRICULUM VITAE · CAREER & EDUCATION'
-                  : 'WERDEGANG & AUSBILDUNG'}
+                {locale === 'en' ? 'BACKGROUND & CV' : 'WERDEGANG & AUSBILDUNG'}
               </span>
               <h2 className="font-['Syne'] text-4xl sm:text-6xl font-bold mt-2 text-[#F6F2E9]">
                 {locale === 'en' ? 'Experience & Education' : 'Berufserfahrung & Studium'}
@@ -676,8 +680,8 @@ export default function App() {
             </div>
             <p className="text-sm text-[#D6CFC2] max-w-sm mt-3 md:mt-0">
               {locale === 'en'
-                ? 'Academic foundation in Business Informatics (B.Sc., DHBW Stuttgart) combined with enterprise backend and full-stack software engineering.'
-                : 'Duales Studium der Wirtschaftsinformatik (B.Sc., DHBW Stuttgart) kombiniert mit mehrjähriger Praxis in der Java- & Angular-Entwicklung.'}
+                ? 'Dual Bachelor in Business Informatics (B.Sc.) at DHBW Stuttgart, followed by backend and full-stack development in Germany and Switzerland.'
+                : 'Duales Studium der Wirtschaftsinformatik (B.Sc.) an der DHBW Stuttgart, gefolgt von Backend- und Full-Stack-Entwicklung in Deutschland und der Schweiz.'}
             </p>
           </div>
 
@@ -745,31 +749,33 @@ export default function App() {
           <div className={`p-8 sm:p-14 rounded-3xl border backdrop-blur-2xl ${staticCardClass}`}>
             <div className="max-w-3xl">
               <span className="font-mono text-xs text-[#F5B841]">
-                CORRESPONDENCE · SISSACH, SWITZERLAND
+                {locale === 'en'
+                  ? 'CONTACT · SISSACH, SWITZERLAND'
+                  : 'KONTAKT · SISSACH, SCHWEIZ'}
               </span>
               <h2 className="font-['Syne'] text-4xl sm:text-6xl font-bold mt-3 mb-6 text-[#F6F2E9]">
                 {locale === 'en' ? (
                   <>
-                    Initiate a{' '}
+                    Let&apos;s{' '}
                     <span className="font-['Instrument_Serif'] italic font-normal text-[#F5B841]">
-                      Conversation
+                      talk
                     </span>
                     .
                   </>
                 ) : (
                   <>
-                    Lassen Sie uns{' '}
+                    Schreib{' '}
                     <span className="font-['Instrument_Serif'] italic font-normal text-[#F5B841]">
-                      sprechen
+                      mir
                     </span>
                     .
                   </>
                 )}
               </h2>
-              <p className="text-base sm:text-lg text-[#D6CFC2] mb-8">
+              <p className="text-base sm:text-lg text-[#D6CFC2] mb-8 leading-relaxed">
                 {locale === 'en'
-                  ? 'Born 23.03.2001 in Sondershausen, living in Sissach, Switzerland. B.Sc. in Business Informatics (DHBW Stuttgart). German (Native) & English (Proficient in spoken and written). Interests: Weightlifting, Programming, Reading.'
-                  : 'Geboren am 23.03.2001 in Sondershausen, wohnhaft in Sissach, Schweiz. B.Sc. Wirtschaftsinformatik (DHBW Stuttgart). Deutsch (Muttersprache) & Englisch (Fließend in Wort und Schrift). Interessen: Kraftsport, Programmieren, Lesen.'}
+                  ? "I'm 25, originally from Thuringia, and now live in Sissach near Basel. I studied Business Informatics (B.Sc.) at DHBW Stuttgart and speak native German and fluent English. When I'm not writing code, I'm usually in the gym lifting weights or reading."
+                  : 'Ich bin 25, komme ursprünglich aus Thüringen und lebe heute in Sissach bei Basel. Nach meinem dualen Wirtschaftsinformatik-Studium (B.Sc.) an der DHBW Stuttgart hat es mich in die Schweiz gezogen. Wenn ich nicht am Code sitze, findet man mich meistens beim Kraftsport im Gym oder mit einem Buch.'}
               </p>
 
               <div className="flex flex-wrap items-center gap-4">
@@ -791,7 +797,13 @@ export default function App() {
                   ) : (
                     <Copy className="w-4 h-4 text-[#F5B841]" />
                   )}
-                  {copied ? 'COPIED' : 'COPY ADDRESS'}
+                  {copied
+                    ? locale === 'en'
+                      ? 'COPIED'
+                      : 'KOPIERT'
+                    : locale === 'en'
+                      ? 'COPY EMAIL'
+                      : 'E-MAIL KOPIEREN'}
                 </button>
 
                 <a
