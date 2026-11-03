@@ -359,7 +359,7 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     id: 'dc-translation',
     index: 'V',
     category: 'personal',
-    title: 'Discord Translation Bot (dc-translation)',
+    title: 'Discord Translation Bot',
     role: {
       en: 'Personal Open-Source Project',
       de: 'Privates Open-Source-Projekt',
@@ -376,8 +376,8 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     },
     year: { en: 'SIDE PROJECT', de: 'HOBBYPROJEKT' },
     story: {
-      en: 'Most Discord translation bots spam public channels with flag-reaction replies and burn through API quotas on emojis or bot commands. I built dc-translation so users get a private split-screen Live Thread or right-click ephemeral translation cards instead.',
-      de: 'Klassische Übersetzungs-Bots auf Discord müllen öffentliche Channels oft mit Flaggen-Antworten voll und verfeuern API-Kontingente für Emojis oder Bot-Commands. Deshalb habe ich dc-translation gebaut: Übersetzungen landen in einem privaten Split-Screen-Live-Thread oder als nur für dich sichtbare Rechtsklick-Karte.',
+      en: 'Most Discord translation bots spam public channels with flag-reaction replies and burn through API quotas on emojis or bot commands. I built this bot so users get a private split-screen Live Thread or right-click ephemeral translation cards instead.',
+      de: 'Klassische Übersetzungs-Bots auf Discord müllen öffentliche Channels oft mit Flaggen-Antworten voll und verfeuern API-Kontingente für Emojis oder Bot-Commands. Deshalb habe ich diesen Bot gebaut: Übersetzungen landen in einem privaten Split-Screen-Live-Thread oder als nur für dich sichtbare Rechtsklick-Karte.',
     },
     engineeringNote: {
       en: 'Before calling Google Cloud Translation or DeepL, a local filter strips markup, URLs, and bot commands and checks n-gram language detection. Concurrent requests share an in-flight cache backed by L1 memory and L2 MongoDB Atlas, with user settings encrypted via AES-256-GCM.',
