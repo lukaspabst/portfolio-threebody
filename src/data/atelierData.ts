@@ -403,32 +403,4 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     ],
     href: 'https://github.com/lukaspabst/dc-translation',
   },
-  {
-    id: 'zen-ui',
-    index: 'VI',
-    category: 'personal',
-    title: 'zeN-UI (@lukaspabst/library)',
-    role: 'Personal Open-Source Project',
-    statusPill: 'Hobby · Open Source',
-    archPill: 'Design System & NPM Package',
-    subtitle: {
-      en: 'Modular React & TypeScript UI Component Library',
-      de: 'Modulare React- & TypeScript-UI-Komponentenbibliothek',
-    },
-    discipline: {
-      en: 'React · TypeScript · Vite · SCSS · GitHub Packages',
-      de: 'React · TypeScript · Vite · SCSS · GitHub Packages',
-    },
-    year: 'HOBBY · OPEN SOURCE',
-    story: {
-      en: 'Personal UI component library and companion documentation site packaged with Vite in ESM/UMD formats with strict TypeScript declarations.',
-      de: 'Eigene UI-Komponentenbibliothek samt Dokumentations-Website, gebündelt mit Vite als ESM/UMD-Paket mit strikten TypeScript-Typdefinitionen.',
-    },
-    engineeringNote: {
-      en: 'Dual-build pipeline producing tree-shakeable ES modules, UMD bundles, and standalone stylesheet exports published to GitHub Packages.',
-      de: 'Dual-Build-Pipeline für tree-shakeable ES-Module, UMD-Bundles und isolierte Stylesheet-Exporte auf GitHub Packages.',
-    },
-    stack: ['React', 'TypeScript', 'Vite', 'SCSS', 'GitHub Packages'],
-    href: 'https://github.com/lukaspabst/zeN-UI',
-  },
 ];

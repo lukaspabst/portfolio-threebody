@@ -488,7 +488,7 @@ export default function App() {
                     : 'text-[#D6CFC2] hover:text-[#F6F2E9]'
                 }`}
               >
-                {locale === 'en' ? 'All Works (6)' : 'Alle Projekte (6)'}
+                {locale === 'en' ? 'All Works (5)' : 'Alle Projekte (5)'}
               </button>
               <button
                 type="button"
@@ -512,7 +512,7 @@ export default function App() {
                 }`}
               >
                 <Code2 className="w-3.5 h-3.5" />
-                {locale === 'en' ? 'Personal & Hobby (3)' : 'Hobby & Open Source (3)'}
+                {locale === 'en' ? 'Personal & Hobby (2)' : 'Hobby & Open Source (2)'}
               </button>
             </div>
           </div>
