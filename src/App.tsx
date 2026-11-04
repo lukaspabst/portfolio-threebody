@@ -217,7 +217,7 @@ export default function App() {
   };
 
   return (
-    <div ref={containerRef} className="relative min-h-screen overflow-x-hidden">
+    <div ref={containerRef} className="relative min-h-screen overflow-x-clip">
       <Suspense fallback={null}>
         <ZenCosmosCanvas scrollProgressRef={scrollProgressRef} />
       </Suspense>
@@ -344,10 +344,10 @@ export default function App() {
                   : 'PRIVATES PROJEKT (LIVE-DEMO)'}
               </div>
               <div className="zen-font-display font-bold text-lg mt-1 text-[var(--zen-ink-primary)]">
-                JourneyLink (Architecture Sandbox)
+                JourneyLink (22-SCS Sandbox)
               </div>
               <div className="text-xs text-[var(--zen-ink-secondary)] mt-0.5">
-                Angular 20 Native Federation · Spring Boot · RabbitMQ
+                Angular 20 · Kotlin / Spring Boot 4 · Node.js · Python FastAPI · RabbitMQ
               </div>
             </div>
 
@@ -467,7 +467,7 @@ export default function App() {
               )}
             </div>
 
-            <div className="hidden lg:block lg:col-span-5 lg:sticky lg:top-28 min-w-0">
+            <div className="hidden lg:block lg:col-span-5 lg:sticky lg:top-24 self-start min-w-0">
               <ZenDossierPanel item={activeDossierItem} />
             </div>
           </div>
