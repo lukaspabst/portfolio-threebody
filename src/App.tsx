@@ -16,7 +16,7 @@ import {
   ZenModal,
   useZenAudioSynth,
   type ZenDossierItem,
-} from '@zen-ui/system';
+} from '@zen-ui-capri/system';
 import {
   ATELIER_PROFILE,
   ATELIER_WORKS,
