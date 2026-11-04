@@ -497,8 +497,8 @@ export default function App() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               <p className="text-sm text-[var(--zen-ink-secondary)] max-w-sm">
                 {locale === 'en'
-                  ? 'Dual Bachelor in Business Informatics (B.Sc.) at DHBW Stuttgart, followed by backend and full-stack development in Germany and Switzerland.'
-                  : 'Duales Studium der Wirtschaftsinformatik (B.Sc.) an der DHBW Stuttgart, gefolgt von Backend- und Full-Stack-Entwicklung in Deutschland und der Schweiz.'}
+                  ? 'Dual Bachelor in Business Informatics (B.Sc.) at DHBW Stuttgart & Allianz, followed by backend and full-stack development in Germany and Switzerland.'
+                  : 'Duales Studium der Wirtschaftsinformatik (B.Sc.) an der DHBW Stuttgart & Allianz, gefolgt von Backend- und Full-Stack-Entwicklung in Deutschland und der Schweiz.'}
               </p>
 
               <a

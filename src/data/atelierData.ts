@@ -115,37 +115,47 @@ export const ATELIER_TIMELINE: readonly AtelierTimelineEntry[] = [
     institution: 'Finanz-Data GmbH',
     location: { en: 'Gotha, Germany', de: 'Gotha, Deutschland' },
     summary: {
-      en: 'Java backend development and REST service migration to Spring Boot in the HUK insurance environment.',
-      de: 'Java-Backend-Entwicklung und Migration bestehender REST-Services auf Spring Boot im HUK-Versicherungsumfeld.',
+      en: 'Java backend development and REST service migration to Spring Boot in the HUK insurance environment, preceded by the two-month BURDA time-tracking project.',
+      de: 'Java-Backend-Entwicklung und Migration bestehender REST-Services auf Spring Boot im HUK-Versicherungsumfeld sowie zum Einstieg das zweimonatige BURDA-Projekt.',
     },
     bullets: {
       en: [
-        'Developed backend services in Java and migrated legacy REST services to Spring Boot',
-        'Supported daily operations in the HUK environment and analyzed functional requirements',
-        'Built automated unit and integration test suites with JUnit, Postman, and Jenkins',
+        'Developed backend services in Java and migrated legacy REST services to Spring Boot (HUK environment)',
+        'Supported daily operations, analyzed functional requirements, and built JUnit/Postman/Jenkins test suites',
+        'Implemented the internal BURDA time-tracking web app with HR approval workflow on AWS (01–02/2023)',
       ],
       de: [
-        'Backend-Entwicklung in Java und schrittweise Migration bestehender REST-Services auf Spring Boot',
-        'Betreuung der HUK-Umgebung im Tagesgeschäft inklusive Anforderungsanalyse',
-        'Aufbau automatisierter Unit- und Integrationstests mit JUnit, Postman und Jenkins',
+        'Backend-Entwicklung in Java und schrittweise Migration bestehender REST-Services auf Spring Boot (HUK-Umfeld)',
+        'Betreuung im Tagesgeschäft, Anforderungsanalyse sowie automatisierte Tests mit JUnit, Postman und Jenkins',
+        'Umsetzung des internen BURDA-Zeiterfassungs-Tools mit HR-Freigabeprozess auf AWS (01–02/2023)',
       ],
     },
-    tags: ['Java', 'Spring Boot', 'REST Services', 'JUnit', 'Jenkins', 'Innovator'],
+    tags: ['Java', 'Spring Boot', 'REST Services', 'JUnit', 'Jenkins', 'AWS', 'Innovator'],
   },
   {
     period: { en: '10/2019 – 10/2022', de: '10/2019 – 10/2022' },
     category: 'education',
     title: {
-      en: 'B.Sc. Business Informatics (Dual Study Program)',
-      de: 'Duales Studium Wirtschaftsinformatik (B.Sc.)',
+      en: 'B.Sc. Business Informatics (Dual Study · Allianz)',
+      de: 'Duales Studium Wirtschaftsinformatik (B.Sc. · Allianz)',
     },
-    institution: 'Duale Hochschule Baden-Württemberg (DHBW)',
+    institution: 'DHBW Stuttgart & Allianz',
     location: { en: 'Stuttgart, Germany', de: 'Stuttgart, Deutschland' },
     summary: {
-      en: 'Three-year dual bachelor program combining university computer science & business studies in Stuttgart with full-time practical software engineering phases (including the BURDA project on AWS).',
-      de: 'Dreijähriges duales Bachelorstudium im Wechsel zwischen Theoriephasen in Stuttgart und praktischer Softwareentwicklung im Unternehmen (u.a. BURDA-Projekt auf AWS).',
+      en: 'Three-year dual bachelor program with 3 years of practical phases as Backend Developer at Allianz and Frontend Developer in academic student projects.',
+      de: 'Dreijähriges duales Bachelorstudium mit 3 Jahren Praxisphasen als Backend-Entwickler bei der Allianz sowie als Frontend-Entwickler in Studienprojekten.',
     },
-    tags: ['Bachelor of Science', 'Software Engineering', 'Java / Spring', 'AWS', 'SQL & NoSQL', 'Scrum'],
+    bullets: {
+      en: [
+        'Practical phases (3 years): Backend development in enterprise insurance systems at Allianz',
+        'Academic study projects: Frontend development and agile software engineering in student teams',
+      ],
+      de: [
+        'Praxisphasen (3 Jahre): Backend-Entwicklung im Enterprise-Versicherungsumfeld bei der Allianz',
+        'Studienprojekte an der DHBW: Frontend-Entwicklung und agile Softwareentwicklung im Team',
+      ],
+    },
+    tags: ['Bachelor of Science', 'Allianz (Backend)', 'Frontend Projects', 'Java / Spring', 'SQL & NoSQL', 'Scrum'],
   },
   {
     period: { en: '08/2011 – 06/2019', de: '08/2011 – 06/2019' },
@@ -286,10 +296,10 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     category: 'enterprise',
     title: 'BURDA Timetracking',
     role: {
-      en: 'Software Developer · Dual Study Project',
-      de: 'Software Developer · Praxisprojekt im Studium',
+      en: 'Software Developer · Finanz-Data GmbH (Gotha)',
+      de: 'Software Developer · Finanz-Data GmbH (Gotha)',
     },
-    statusPill: { en: 'Study Project', de: 'Studienprojekt' },
+    statusPill: { en: 'Previous Work', de: 'Früheres Projekt' },
     archPill: {
       en: 'HR Workflow & AWS',
       de: 'HR-Workflow & AWS',
@@ -302,10 +312,10 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       en: 'Java · Spring · Web · AWS · Scrum',
       de: 'Java · Spring · Web · AWS · Scrum',
     },
-    year: { en: '2019 – 2022', de: '2019 – 2022' },
+    year: { en: '01/2023 – 02/2023', de: '01/2023 – 02/2023' },
     story: {
-      en: 'Built an internal time-tracking web app where employees log, edit, and submit their working hours, and HR can approve or reject entries with feedback.',
-      de: 'Entwicklung eines internen Zeiterfassungs-Tools, in dem Mitarbeitende ihre Arbeitszeiten eintragen, bearbeiten und einreichen können und HR Einträge mit Rückmeldung freigibt oder ablehnt.',
+      en: 'During my first two months at Finanz-Data GmbH, I worked on an internal time-tracking web app for BURDA where employees log, edit, and submit their working hours, and HR approves or rejects entries with feedback.',
+      de: 'In meinen ersten beiden Monaten bei der Finanz-Data GmbH habe ich an einem Zeiterfassungs-Tool für BURDA mitgearbeitet, in dem Mitarbeitende ihre Arbeitszeiten eintragen, bearbeiten und einreichen können und HR Einträge mit Rückmeldung freigibt oder ablehnt.',
     },
     engineeringNote: {
       en: 'Developed in a Scrum team from requirement analysis and data modeling through to implementation, automated testing, and deployment on AWS.',
