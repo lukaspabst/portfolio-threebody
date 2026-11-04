@@ -5,7 +5,6 @@ import {
   ZenNavbar,
   ZenHeading,
   ZenCard,
-  ZenMetricStrip,
   ZenBadge,
   ZenButton,
   ZenCopyButton,
@@ -38,6 +37,9 @@ export default function App() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollProgressRef = useRef<number>(0);
+
+  const cvPdfHref =
+    locale === 'en' ? '/CV_Lukas_Pabst_EN.pdf' : '/Lebenslauf_Lukas_Pabst_DE.pdf';
 
   const enterpriseWorks = useMemo(
     () => ATELIER_WORKS.filter((w) => w.category === 'enterprise'),
@@ -74,8 +76,8 @@ export default function App() {
         locale === 'en' ? 'TECHNICAL DETAILS' : 'TECHNISCHER HINTERGRUND',
       highlights: activeWork.highlights?.[locale],
       metrics: activeWork.metrics?.map((m) => ({
-        value: m.val,
-        label: m.lbl,
+        value: m.val[locale],
+        label: m.lbl[locale],
       })),
       tags: activeWork.stack,
       primaryAction: activeWork.liveUrl
@@ -90,7 +92,13 @@ export default function App() {
         : activeWork.href
           ? {
               label:
-                activeWork.id === 'journeylink' ? 'GitHub Org' : 'GitHub Repo',
+                activeWork.id === 'journeylink'
+                  ? locale === 'en'
+                    ? 'GitHub Org'
+                    : 'GitHub-Org'
+                  : locale === 'en'
+                    ? 'GitHub Repo'
+                    : 'GitHub-Repo',
               href: activeWork.href,
               icon: <ZenIcon name="code" size="sm" />,
             }
@@ -99,7 +107,13 @@ export default function App() {
         activeWork.liveUrl && activeWork.href
           ? {
               label:
-                activeWork.id === 'journeylink' ? 'GitHub Org' : 'GitHub Repo',
+                activeWork.id === 'journeylink'
+                  ? locale === 'en'
+                    ? 'GitHub Org'
+                    : 'GitHub-Org'
+                  : locale === 'en'
+                    ? 'GitHub Repo'
+                    : 'GitHub-Repo',
               href: activeWork.href,
               icon: <ZenIcon name="code" size="sm" />,
             }
@@ -158,7 +172,6 @@ export default function App() {
         <ZenCard
           variant="interactive"
           selected={isSelected}
-          selectOnHover
           onSelect={() => setActiveWorkId(work.id)}
           padding="md"
         >
@@ -174,7 +187,7 @@ export default function App() {
               )}
               {work.archPill && (
                 <ZenBadge tone="neutral" className="whitespace-nowrap">
-                  {work.archPill}
+                  {work.archPill[locale]}
                 </ZenBadge>
               )}
               <span className="text-[var(--zen-ink-secondary)] whitespace-nowrap">
@@ -195,16 +208,6 @@ export default function App() {
           <p className="text-sm sm:text-base text-[var(--zen-ink-secondary)] mt-4 leading-relaxed">
             {work.story[locale]}
           </p>
-
-          {work.metrics && (
-            <ZenMetricStrip
-              metrics={work.metrics.map((m) => ({
-                value: m.val,
-                label: m.lbl,
-              }))}
-              className="mt-5"
-            />
-          )}
         </ZenCard>
 
         {isSelected && (
@@ -332,7 +335,7 @@ export default function App() {
               </div>
               <div className="text-xs text-[var(--zen-ink-secondary)] mt-0.5">
                 {locale === 'en'
-                  ? 'Tech Lead Java & Angular · SCS · Keycloak IDP (since 09/2024)'
+                  ? 'Technical Ownership Java & Angular · SCS · Keycloak IDP (since 09/2024)'
                   : 'Fachverantwortung Java & Angular · SCS · Keycloak IDP (seit 09/2024)'}
               </div>
             </div>
@@ -344,7 +347,9 @@ export default function App() {
                   : 'PRIVATES PROJEKT (LIVE-DEMO)'}
               </div>
               <div className="zen-font-display font-bold text-lg mt-1 text-[var(--zen-ink-primary)]">
-                JourneyLink (22-SCS Sandbox)
+                {locale === 'en'
+                  ? 'JourneyLink · Group Travel & SCS'
+                  : 'JourneyLink · Gruppen-Reiseplattform'}
               </div>
               <div className="text-xs text-[var(--zen-ink-secondary)] mt-0.5">
                 Angular 20 · Kotlin / Spring Boot 4 · Node.js · Python FastAPI · RabbitMQ
@@ -353,27 +358,26 @@ export default function App() {
 
             <div className="lg:col-span-4 flex flex-wrap items-center lg:justify-end gap-3">
               <a
-                href="https://demo.journeylink.dev"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#exhibition"
                 className="zen-btn-base zen-btn-primary zen-focus-ring px-5 py-3 text-sm whitespace-nowrap"
               >
                 <span>
-                  {locale === 'en' ? 'Open Live Demo' : 'Live-Demo öffnen'}
+                  {locale === 'en' ? 'Explore Projects' : 'Projekte ansehen'}
                 </span>
-                <ZenIcon name="external-link" size="xs" />
+                <ZenIcon name="chevron-down" size="xs" />
               </a>
 
-              <ZenButton
-                variant="secondary"
-                size="md"
-                mono
-                pressed={synth.active}
-                onClick={synth.toggle}
-                iconLeft={<ZenIcon name="radio" size="sm" tone="accent" />}
+              <a
+                href={cvPdfHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="zen-btn-base zen-btn-secondary zen-focus-ring px-4 py-3 text-xs zen-font-mono whitespace-nowrap"
               >
-                {synth.active ? 'Pause Lo-Fi' : 'Lo-Fi Beats'}
-              </ZenButton>
+                <span>
+                  {locale === 'en' ? 'Download CV (PDF)' : 'Lebenslauf (PDF)'}
+                </span>
+                <ZenIcon name="external-link" size="xs" tone="accent" />
+              </a>
             </div>
           </ZenCard>
         </section>
@@ -477,12 +481,12 @@ export default function App() {
           id="career"
           className="py-24 border-t border-[var(--zen-border-subtle)]"
         >
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
             <ZenHeading
               as="h2"
               size="display"
               eyebrow={
-                locale === 'en' ? 'BACKGROUND & CV' : 'WERDEGANG & AUSBILDUNG'
+                locale === 'en' ? 'BACKGROUND & CV' : 'WERDEGANG & LEBENSLAUF'
               }
             >
               {locale === 'en'
@@ -490,11 +494,25 @@ export default function App() {
                 : 'Berufserfahrung & Studium'}
             </ZenHeading>
 
-            <p className="text-sm text-[var(--zen-ink-secondary)] max-w-sm">
-              {locale === 'en'
-                ? 'Dual Bachelor in Business Informatics (B.Sc.) at DHBW Stuttgart, followed by backend and full-stack development in Germany and Switzerland.'
-                : 'Duales Studium der Wirtschaftsinformatik (B.Sc.) an der DHBW Stuttgart, gefolgt von Backend- und Full-Stack-Entwicklung in Deutschland und der Schweiz.'}
-            </p>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <p className="text-sm text-[var(--zen-ink-secondary)] max-w-sm">
+                {locale === 'en'
+                  ? 'Dual Bachelor in Business Informatics (B.Sc.) at DHBW Stuttgart, followed by backend and full-stack development in Germany and Switzerland.'
+                  : 'Duales Studium der Wirtschaftsinformatik (B.Sc.) an der DHBW Stuttgart, gefolgt von Backend- und Full-Stack-Entwicklung in Deutschland und der Schweiz.'}
+              </p>
+
+              <a
+                href={cvPdfHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="zen-btn-base zen-btn-secondary zen-focus-ring px-4 py-2.5 text-xs zen-font-mono whitespace-nowrap self-start sm:self-auto"
+              >
+                <span>
+                  {locale === 'en' ? 'Download CV (PDF)' : 'Lebenslauf (PDF)'}
+                </span>
+                <ZenIcon name="external-link" size="xs" tone="accent" />
+              </a>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -544,11 +562,11 @@ export default function App() {
 
               <p className="text-base sm:text-lg text-[var(--zen-ink-secondary)] mb-8 leading-relaxed">
                 {locale === 'en'
-                  ? "I'm 25, originally from Thuringia, and now live in Sissach near Basel. I studied Business Informatics (B.Sc.) at DHBW Stuttgart and speak native German and fluent English. When I'm not writing code, I'm usually in the gym lifting weights or reading."
-                  : 'Ich bin 25, komme ursprünglich aus Thüringen und lebe heute in Sissach bei Basel. Nach meinem dualen Wirtschaftsinformatik-Studium (B.Sc.) an der DHBW Stuttgart hat es mich in die Schweiz gezogen. Wenn ich nicht am Code sitze, findet man mich meistens beim Kraftsport im Gym oder mit einem Buch.'}
+                  ? "Originally from Thuringia, I now live in Sissach near Basel. I studied Business Informatics (B.Sc.) at DHBW Stuttgart and speak native German and fluent English. When I'm not writing code, I'm usually in the gym lifting weights or reading."
+                  : 'Ich komme ursprünglich aus Thüringen und lebe heute in Sissach bei Basel. Nach meinem dualen Wirtschaftsinformatik-Studium (B.Sc.) an der DHBW Stuttgart hat es mich in die Schweiz gezogen. Wenn ich nicht am Code sitze, findet man mich meistens beim Kraftsport im Gym oder mit einem Buch.'}
               </p>
 
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap items-center gap-3.5">
                 <a
                   href={`mailto:${ATELIER_PROFILE.email}`}
                   className="zen-btn-base zen-btn-primary zen-focus-ring px-6 py-3.5 text-sm"
@@ -564,12 +582,14 @@ export default function App() {
                 />
 
                 <a
-                  href="https://demo.journeylink.dev"
+                  href={cvPdfHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3.5 text-xs zen-font-mono"
                 >
-                  <span>demo.journeylink.dev</span>
+                  <span>
+                    {locale === 'en' ? 'Download CV (PDF)' : 'Lebenslauf (PDF)'}
+                  </span>
                   <ZenIcon name="external-link" size="xs" tone="accent" />
                 </a>
 
@@ -580,6 +600,16 @@ export default function App() {
                   className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3.5 text-xs zen-font-mono"
                 >
                   <span>GitHub</span>
+                  <ZenIcon name="external-link" size="xs" tone="accent" />
+                </a>
+
+                <a
+                  href={ATELIER_PROFILE.xing}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="zen-btn-base zen-btn-secondary zen-focus-ring px-5 py-3.5 text-xs zen-font-mono"
+                >
+                  <span>XING</span>
                   <ZenIcon name="external-link" size="xs" tone="accent" />
                 </a>
               </div>

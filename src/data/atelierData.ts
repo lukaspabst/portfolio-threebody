@@ -15,6 +15,11 @@ export interface AtelierTimelineEntry {
   readonly tags: readonly string[];
 }
 
+export interface AtelierMetric {
+  readonly val: { readonly en: string; readonly de: string };
+  readonly lbl: { readonly en: string; readonly de: string };
+}
+
 export interface AtelierWork {
   readonly id: string;
   readonly index: string;
@@ -22,7 +27,7 @@ export interface AtelierWork {
   readonly title: string;
   readonly role?: { readonly en: string; readonly de: string };
   readonly statusPill?: { readonly en: string; readonly de: string };
-  readonly archPill?: string;
+  readonly archPill?: { readonly en: string; readonly de: string };
   readonly subtitle: { readonly en: string; readonly de: string };
   readonly discipline: { readonly en: string; readonly de: string };
   readonly year: { readonly en: string; readonly de: string };
@@ -32,7 +37,7 @@ export interface AtelierWork {
     readonly en: readonly string[];
     readonly de: readonly string[];
   };
-  readonly metrics?: readonly { readonly val: string; readonly lbl: string }[];
+  readonly metrics?: readonly AtelierMetric[];
   readonly stack: readonly string[];
   readonly liveUrl?: string;
   readonly href?: string;
@@ -56,8 +61,8 @@ export const ATELIER_PROFILE = {
   journeyLinkGithub: 'https://github.com/Journey-Link',
   xing: 'https://www.xing.com/profile/Lukas_Pabst102',
   statement: {
-    en: "Hi, I'm Lukas, a 25-year-old Full Stack Developer based in Sissach near Basel. At Primeo Energie, I build Self-Contained Systems with Java and Angular for our customer portal and serve as technical lead for both stacks. In my free time, I like building my own web projects and experimenting with distributed architectures.",
-    de: 'Hi, ich bin Lukas, 25 Jahre alt und Full Stack Developer in Sissach bei Basel. Bei Primeo Energie entwickle ich Self-Contained Systems mit Java und Angular für unser Kundenportal und übernehme die Fachverantwortung für beide Stacks. Privat baue ich gerne eigene Web-Projekte und probiere neue Architektur-Konzepte aus.',
+    en: "Hi, I'm Lukas, a Full Stack Developer based in Sissach near Basel. At Primeo Energie, I build Self-Contained Systems with Java and Angular for our customer portal and hold technical ownership for both stacks. Outside of work, I enjoy building my own web projects and testing distributed architecture concepts.",
+    de: 'Hi, ich bin Lukas, Full Stack Developer in Sissach bei Basel. Bei Primeo Energie entwickle ich Self-Contained Systems mit Java und Angular für unser Kundenportal und übernehme die Fachverantwortung für beide Stacks. Privat baue ich gerne eigene Web-Projekte und probiere neue Architektur-Konzepte aus.',
   },
 } as const;
 
@@ -66,29 +71,32 @@ export const ATELIER_TIMELINE: readonly AtelierTimelineEntry[] = [
     period: { en: '09/2024 – Present', de: '09/2024 – Heute' },
     category: 'experience',
     title: {
-      en: 'Full Stack Developer (Tech Lead Java & Angular)',
+      en: 'Full Stack Developer (Technical Ownership Java & Angular)',
       de: 'Full Stack Developer (Fachverantwortung Java & Angular)',
     },
     institution: 'Primeo Energie',
-    location: { en: 'Münchenstein / Sissach, CH', de: 'Münchenstein / Sissach, CH' },
+    location: {
+      en: 'Münchenstein (Basel Area), CH',
+      de: 'Münchenstein (Region Basel), CH',
+    },
     summary: {
-      en: 'Working on the customer portal in a Self-Contained Systems (SCS) architecture, from solution design to backend and frontend implementation.',
+      en: 'Developing the customer portal in a Self-Contained Systems (SCS) architecture, from solution design to backend and frontend implementation.',
       de: 'Weiterentwicklung des Kundenportals in einer Self-Contained-Systems-Architektur (SCS), vom Solution Design bis zur Umsetzung in Java und Angular.',
     },
     bullets: {
       en: [
-        'Building Self-Contained Systems (SCS) for the customer portal with Angular and Java',
-        'Technical ownership (Fachverantwortung) for Java and Angular across the team',
-        'Co-designing the technical solution architecture for new portal features',
-        'Building custom CMS apps for Magnolia and custom themes/plugins for Keycloak IDP',
-        'Coordinating tasks and code reviews with nearshoring developers',
+        'Developing Self-Contained Systems (SCS) for the customer portal with Angular and Java',
+        'Technical ownership for the Java and Angular stacks across the team',
+        'Contributing to the technical Solution Design for new portal features',
+        'Developing custom CMS apps for Magnolia and custom themes and plugins for Keycloak IDP',
+        'Supporting technical coordination and code reviews with nearshoring developers',
       ],
       de: [
         'Entwicklung von Self-Contained Systems (SCS) für das Kundenportal mit Angular und Java',
         'Fachverantwortung für Java und Angular im Team',
-        'Mitarbeit am Solution Design für neue Portal-Funktionen',
+        'Unterstützung beim Solution Design für neue Portal-Funktionen',
         'Entwicklung von CMS-Apps für Magnolia sowie eigenen Themes und Plugins für Keycloak IDP',
-        'Fachliche Abstimmung und Koordination mit Nearshoring-Entwicklern',
+        'Fachliche Unterstützung bei der Koordination von Nearshoring-Entwicklern',
       ],
     },
     tags: [
@@ -113,13 +121,13 @@ export const ATELIER_TIMELINE: readonly AtelierTimelineEntry[] = [
     bullets: {
       en: [
         'Developed backend services in Java and migrated legacy REST services to Spring Boot',
-        'Supported daily operations in the HUK environment and clarified functional requirements',
-        'Wrote automated unit and integration tests with JUnit, Postman, and Jenkins',
+        'Supported daily operations in the HUK environment and analyzed functional requirements',
+        'Built automated unit and integration test suites with JUnit, Postman, and Jenkins',
       ],
       de: [
         'Backend-Entwicklung in Java und schrittweise Migration bestehender REST-Services auf Spring Boot',
         'Betreuung der HUK-Umgebung im Tagesgeschäft inklusive Anforderungsanalyse',
-        'Aufbau automatisierter Tests mit JUnit, Postman und Jenkins',
+        'Aufbau automatisierter Unit- und Integrationstests mit JUnit, Postman und Jenkins',
       ],
     },
     tags: ['Java', 'Spring Boot', 'REST Services', 'JUnit', 'Jenkins', 'Innovator'],
@@ -128,21 +136,21 @@ export const ATELIER_TIMELINE: readonly AtelierTimelineEntry[] = [
     period: { en: '10/2019 – 10/2022', de: '10/2019 – 10/2022' },
     category: 'education',
     title: {
-      en: 'B.Sc. Business Informatics (Wirtschaftsinformatik)',
+      en: 'B.Sc. Business Informatics (Dual Study Program)',
       de: 'Duales Studium Wirtschaftsinformatik (B.Sc.)',
     },
     institution: 'Duale Hochschule Baden-Württemberg (DHBW)',
     location: { en: 'Stuttgart, Germany', de: 'Stuttgart, Deutschland' },
     summary: {
-      en: 'Three-year dual bachelor program alternating between university theory in Stuttgart and practical software development phases.',
-      de: 'Dreijähriges duales Bachelorstudium im Wechsel zwischen Theoriephasen in Stuttgart und praktischer Softwareentwicklung im Unternehmen.',
+      en: 'Three-year dual bachelor program combining university computer science & business studies in Stuttgart with full-time practical software engineering phases (including the BURDA project on AWS).',
+      de: 'Dreijähriges duales Bachelorstudium im Wechsel zwischen Theoriephasen in Stuttgart und praktischer Softwareentwicklung im Unternehmen (u.a. BURDA-Projekt auf AWS).',
     },
-    tags: ['Bachelor of Science', 'Software Engineering', 'Java / Spring', 'SQL & NoSQL', 'Scrum'],
+    tags: ['Bachelor of Science', 'Software Engineering', 'Java / Spring', 'AWS', 'SQL & NoSQL', 'Scrum'],
   },
   {
     period: { en: '08/2011 – 06/2019', de: '08/2011 – 06/2019' },
     category: 'education',
-    title: { en: 'Abitur (High School Diploma)', de: 'Abitur' },
+    title: { en: 'Abitur (University Entrance Qualification)', de: 'Allgemeine Hochschulreife (Abitur)' },
     institution: 'Staatliches Seiler-Gymnasium Schlotheim',
     location: { en: 'Schlotheim, Germany', de: 'Schlotheim, Deutschland' },
     summary: {
@@ -160,11 +168,14 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     category: 'enterprise',
     title: 'Primeo Energie · Customer Portal',
     role: {
-      en: 'Full Stack Developer · Tech Lead Java & Angular',
+      en: 'Full Stack Developer · Technical Ownership Java & Angular',
       de: 'Full Stack Developer · Fachverantwortung Java & Angular',
     },
     statusPill: { en: 'Current Work', de: 'Aktuelles Projekt' },
-    archPill: 'Self-Contained Systems (SCS)',
+    archPill: {
+      en: 'Self-Contained Systems (SCS)',
+      de: 'Self-Contained Systems (SCS)',
+    },
     subtitle: {
       en: 'Customer portal built with Angular, Java, Keycloak & Magnolia',
       de: 'Kundenportal mit Angular, Java, Keycloak & Magnolia',
@@ -175,32 +186,44 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     },
     year: { en: '09/2024 – PRESENT', de: 'SEIT 09/2024' },
     story: {
-      en: 'At Primeo Energie, I work on the customer portal and hold technical ownership for Java and Angular. We build the portal as independent Self-Contained Systems (SCS), which keeps domain logic, UI, and deployments cleanly separated.',
+      en: 'At Primeo Energie, I work on the customer portal and hold technical ownership for the Java and Angular stacks. We build the portal as independent Self-Contained Systems (SCS), which keeps domain logic, UI, and deployments cleanly separated.',
       de: 'Bei Primeo Energie arbeite ich am Kundenportal und trage die Fachverantwortung für Java und Angular. Wir setzen das Portal als unabhängige Self-Contained Systems (SCS) um, sodass Fachlogik, UI und Deployments sauber getrennt bleiben.',
     },
     engineeringNote: {
-      en: 'Alongside the Java and Angular SCS modules, I build custom themes and plugins for our Keycloak Identity Provider (IDP), develop CMS apps for Magnolia, and help coordinate our nearshoring developers.',
+      en: 'Alongside the Java and Angular SCS modules, I build custom themes and plugins for our Keycloak Identity Provider (IDP), develop CMS apps for Magnolia, contribute to Solution Design, and support the coordination of our nearshoring developers.',
       de: 'Neben den SCS-Modulen in Java und Angular entwickle ich eigene Themes und Plugins für unseren Keycloak Identity Provider (IDP), baue CMS-Apps für Magnolia und unterstütze beim Solution Design sowie der Koordination unserer Nearshoring-Entwickler.',
     },
     highlights: {
       en: [
         'Developing Self-Contained Systems (SCS) for the customer portal in Angular and Java',
-        'Technical ownership (Fachverantwortung) for Java and Angular and input on Solution Design',
-        'Custom themes and plugins for Keycloak IDP and custom CMS apps for Magnolia',
-        'Technical coordination and code reviews with nearshoring developers',
+        'Technical ownership for the Java and Angular stacks and contribution to Solution Design',
+        'Developing custom themes and plugins for Keycloak IDP and custom CMS apps for Magnolia',
+        'Supporting technical coordination and code reviews with nearshoring developers',
       ],
       de: [
         'Entwicklung von Self-Contained Systems (SCS) für das Kundenportal mit Angular und Java',
-        'Fachverantwortung für Java und Angular sowie Mitarbeit beim Solution Design',
+        'Fachverantwortung für Java und Angular sowie Unterstützung beim Solution Design',
         'Eigene Themes und Plugins für Keycloak IDP sowie CMS-Apps für Magnolia',
-        'Fachliche Koordination und Unterstützung der Nearshoring-Entwickler',
+        'Fachliche Unterstützung bei der Koordination von Nearshoring-Entwicklern',
       ],
     },
     metrics: [
-      { val: 'SCS', lbl: 'Architecture' },
-      { val: 'Java & Angular', lbl: 'Tech Lead' },
-      { val: 'Keycloak IDP', lbl: 'Themes & Plugins' },
-      { val: 'Magnolia', lbl: 'CMS Apps' },
+      {
+        val: { en: 'SCS', de: 'SCS' },
+        lbl: { en: 'Architecture', de: 'Architektur' },
+      },
+      {
+        val: { en: 'Java & Angular', de: 'Java & Angular' },
+        lbl: { en: 'Stack Ownership', de: 'Fachverantwortung' },
+      },
+      {
+        val: { en: 'Keycloak IDP', de: 'Keycloak IDP' },
+        lbl: { en: 'Themes & Plugins', de: 'Themes & Plugins' },
+      },
+      {
+        val: { en: 'Magnolia', de: 'Magnolia' },
+        lbl: { en: 'CMS Apps', de: 'CMS-Apps' },
+      },
     ],
     stack: [
       'Java',
@@ -222,7 +245,10 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       de: 'Software Developer · Finanz-Data GmbH (Gotha)',
     },
     statusPill: { en: 'Previous Work', de: 'Früheres Projekt' },
-    archPill: 'Spring Boot Migration',
+    archPill: {
+      en: 'Spring Boot Migration',
+      de: 'Spring-Boot-Migration',
+    },
     subtitle: {
       en: 'Migrating legacy REST services to Spring Boot',
       de: 'Migration bestehender REST-Services auf Spring Boot',
@@ -242,7 +268,7 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     },
     highlights: {
       en: [
-        'Clarified functional requirements with stakeholders and documented specs in Confluence and Innovator',
+        'Analyzed functional requirements with stakeholders and documented specs in Confluence and Innovator',
         'Migrated legacy REST services to Java and Spring Boot',
         'Built automated unit and integration tests with JUnit, Postman, and Jenkins',
       ],
@@ -264,7 +290,10 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       de: 'Software Developer · Praxisprojekt im Studium',
     },
     statusPill: { en: 'Study Project', de: 'Studienprojekt' },
-    archPill: 'HR Workflow & AWS',
+    archPill: {
+      en: 'HR Workflow & AWS',
+      de: 'HR-Workflow & AWS',
+    },
     subtitle: {
       en: 'Internal time tracking tool with HR approval workflow',
       de: 'Zeiterfassungs-Tool mit HR-Freigabeprozess',
@@ -302,14 +331,17 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     category: 'personal',
     title: 'JourneyLink',
     role: {
-      en: 'Personal Side Project & 22-SCS Architecture Sandbox',
-      de: 'Persönliches Hobbyprojekt & 22-SCS-Architektur-Sandbox',
+      en: 'Full-Stack Group Travel Platform & SCS Architecture Project',
+      de: 'Full-Stack Gruppen-Reiseplattform & SCS-Architekturprojekt',
     },
     statusPill: { en: 'Live Demo', de: 'Live-Demo' },
-    archPill: '22 SCSs · Native Federation · RabbitMQ',
+    archPill: {
+      en: 'Native Federation · Event-Driven SCS',
+      de: 'Native Federation · Event-Driven SCS',
+    },
     subtitle: {
-      en: 'Group travel platform & B2B creator marketplace across 22 Self-Contained Systems',
-      de: 'Gruppen-Reiseplattform & B2B-Creator-Marktplatz mit 22 Self-Contained Systems',
+      en: 'Group travel platform & B2B marketplace built with Angular 20 Native Federation, Kotlin & Node.js',
+      de: 'Gruppen-Reiseplattform & B2B-Marktplatz mit Angular 20 Native Federation, Kotlin & Node.js',
     },
     discipline: {
       en: 'Angular 20 Native Federation · Kotlin / Spring Boot 4 · Node.js / Express · Python FastAPI · RabbitMQ · MongoDB · Redis',
@@ -317,38 +349,50 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     },
     year: { en: 'SIDE PROJECT · DEMO', de: 'HOBBY · DEMO' },
     story: {
-      en: 'JourneyLink is my personal playground for testing how far you can push Angular 20 Native Federation and 22 decoupled Self-Contained Systems on a single Hetzner host. It combines zero-knowledge .ics calendar polling, group voting, AES-256-GCM ticket storage, and expense splitting with B2B agency and creator portals.',
-      de: 'JourneyLink ist mein privates Hobbyprojekt, mit dem ich Angular 20 Native Federation und 22 entkoppelte Self-Contained Systems auf einem Hetzner-Server ausreize. Die Plattform verbindet lokalen .ics-Kalender-Abgleich, Gruppen-Voting, einen AES-256-GCM-Ticket-Tresor und Ausgaben-Splitting mit B2B-Agency- und Creator-Portalen.',
+      en: 'JourneyLink is a group travel platform where friends find common dates via client-side .ics calendar matching (only free/busy slots leave the browser), vote on stops in real time, store encrypted tickets, and split expenses—paired with B2B agency and creator portals.',
+      de: 'JourneyLink ist eine Gruppen-Reiseplattform, auf der Freunde über einen clientseitigen .ics-Kalenderabgleich (nur Frei/Belegt-Zeiten verlassen den Browser) gemeinsame Termine finden, live über Stopps abstimmen, Tickets verschlüsselt ablegen und Ausgaben aufteilen.',
     },
     engineeringNote: {
-      en: '6 Kotlin / Spring Boot 4 APIs, 10 Node.js / Express services, and a Python 3.12 FastAPI crawler run against 16 isolated MongoDB databases (enforced via ArchUnit), syncing asynchronously over RabbitMQ topic exchanges with Redis rate-limiting, Clerk JWKS auth, and Prometheus/Grafana telemetry.',
-      de: '6 Kotlin / Spring Boot 4 APIs, 10 Node.js / Express-Services und ein Python 3.12 FastAPI-Crawler arbeiten auf 16 strikt getrennten MongoDB-Datenbanken (per ArchUnit geprüft) und synchronisieren sich asynchron über RabbitMQ-Exchanges – abgesichert durch Redis, Clerk JWKS und Prometheus/Grafana.',
+      en: '6 Kotlin / Spring Boot 4 APIs, 10 Node.js / Express services, and a Python 3.12 FastAPI crawler run against 16 isolated MongoDB databases (enforced via ArchUnit), syncing asynchronously over RabbitMQ topic exchanges with Redis rate-limiting, Clerk JWKS auth, and Prometheus/Grafana container monitoring.',
+      de: '6 Kotlin / Spring Boot 4 APIs, 10 Node.js / Express-Services und ein Python 3.12 FastAPI-Crawler arbeiten auf 16 strikt getrennten MongoDB-Datenbanken (per ArchUnit geprüft) und synchronisieren sich asynchron über RabbitMQ-Exchanges – abgesichert durch Redis, Clerk JWKS und Prometheus/Grafana-Monitoring.',
     },
     highlights: {
       en: [
-        'Self-healing Angular 20 Native Federation shell loading consumer & B2B micro-frontends with @journey-link/ui (38 theme tokens)',
+        'Fault-tolerant Angular 20 Native Federation shell loading 12 remote apps with @journey-link/ui (38 theme tokens)',
         '16 isolated MongoDB databases (ArchUnit-verified) + RabbitMQ AMQP topic exchanges (trips, catalog, collaboration) & Redis cache',
-        'Clerk JWKS identity guards, cross-platform Java/Node AES-256-GCM ticket vault, plus Stripe, Duffel, Gemini & Open-Meteo integrations',
-        'Automated Playwright E2E, Lighthouse CI quality gates, and Prometheus/Grafana container memory monitoring',
+        'Clerk JWKS identity guards, cross-platform Java/Node AES-256-GCM ticket encryption, plus Stripe, Duffel, Gemini & Open-Meteo integrations',
+        'Automated Playwright E2E, Lighthouse CI quality gates, and Prometheus/Grafana container monitoring',
       ],
       de: [
-        'Self-Healing Angular 20 Native Federation Shell für Consumer- & B2B-Micro-Frontends mit eigenem @journey-link/ui Design-System',
+        'Fehlertolerante Angular 20 Native Federation Shell für 12 Remote-Apps mit eigenem @journey-link/ui Design-System',
         '16 isolierte MongoDB-Datenbanken (per ArchUnit geprüft) + asynchrone RabbitMQ-Exchanges (trips, catalog, collaboration) & Redis-Cache',
         'Clerk JWKS Role-Guards, plattformübergreifende Java/Node AES-256-GCM-Verschlüsselung sowie Stripe-, Duffel-, Gemini- & Open-Meteo-Anbindung',
-        'Automatisierte Playwright-E2E-Tests, Lighthouse-CI-Gates und Prometheus/Grafana-Monitoring',
+        'Automatisierte Playwright-E2E-Tests, Lighthouse-CI-Gates und Prometheus/Grafana-Container-Monitoring',
       ],
     },
     metrics: [
-      { val: '22 SCSs', lbl: 'Kotlin · Node · Py' },
-      { val: '12 MFEs', lbl: 'Angular 20' },
-      { val: '16 Mongo DBs', lbl: 'Isolated + GCS' },
-      { val: 'RabbitMQ + Redis', lbl: 'Event-Driven' },
+      {
+        val: { en: '17 Backend APIs', de: '17 Backend-APIs' },
+        lbl: { en: 'Kotlin · Node · Py', de: 'Kotlin · Node · Py' },
+      },
+      {
+        val: { en: '12 MFEs', de: '12 MFEs' },
+        lbl: { en: 'Angular 20 Shell', de: 'Angular 20 Shell' },
+      },
+      {
+        val: { en: '16 Mongo DBs', de: '16 Mongo-DBs' },
+        lbl: { en: 'ArchUnit Isolated', de: 'ArchUnit-isoliert' },
+      },
+      {
+        val: { en: 'RabbitMQ + Redis', de: 'RabbitMQ + Redis' },
+        lbl: { en: 'Event-Driven', de: 'Event-Driven' },
+      },
     ],
     stack: [
       'Angular 20+',
       'Native Federation',
       '@journey-link/ui',
-      'TypeScript',
+      'TypeScript 5.8',
       'Kotlin',
       'Spring Boot 4',
       'Node.js & Express',
@@ -379,14 +423,17 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       de: 'Privates Open-Source-Projekt',
     },
     statusPill: { en: 'Side Project', de: 'Hobbyprojekt' },
-    archPill: 'Live Threads & AES-256-GCM',
+    archPill: {
+      en: 'Live Threads & AES-256-GCM',
+      de: 'Live-Threads & AES-256-GCM',
+    },
     subtitle: {
-      en: 'Multilingual Discord bot with private live threads & smart caching',
-      de: 'Mehrsprachiger Discord-Bot mit privaten Live-Threads & eigenem Cache',
+      en: 'Multilingual Discord bot with private live threads & multi-tier caching',
+      de: 'Mehrsprachiger Discord-Bot mit privaten Live-Threads & mehrstufigem Cache',
     },
     discipline: {
-      en: 'TypeScript 6 · Node.js 20+ · Discord.js v14 · Google Cloud & DeepL · SQLite WAL · MongoDB · Redis',
-      de: 'TypeScript 6 · Node.js 20+ · Discord.js v14 · Google Cloud & DeepL · SQLite WAL · MongoDB · Redis',
+      en: 'TypeScript 5.8 · Node.js 22 · Discord.js v14 · Google Cloud & DeepL · SQLite WAL · MongoDB · Redis',
+      de: 'TypeScript 5.8 · Node.js 22 · Discord.js v14 · Google Cloud & DeepL · SQLite WAL · MongoDB · Redis',
     },
     year: { en: 'SIDE PROJECT', de: 'HOBBYPROJEKT' },
     story: {
@@ -412,14 +459,26 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       ],
     },
     metrics: [
-      { val: '135+ Locales', lbl: 'Auto-Setup' },
-      { val: '3.5s Batching', lbl: 'Live Threads' },
-      { val: 'AES-256-GCM', lbl: 'Encrypted DB' },
-      { val: 'L1 + L2 Cache', lbl: 'Mem · Redis · Mongo' },
+      {
+        val: { en: '135+ Locales', de: '135+ Sprachen' },
+        lbl: { en: 'Auto-Detection', de: 'Auto-Erkennung' },
+      },
+      {
+        val: { en: '3.5s Batching', de: '3,5s-Batching' },
+        lbl: { en: 'Live Threads', de: 'Live-Threads' },
+      },
+      {
+        val: { en: 'AES-256-GCM', de: 'AES-256-GCM' },
+        lbl: { en: 'Encrypted DB', de: 'Verschlüsselte DB' },
+      },
+      {
+        val: { en: 'L1 + L2 Cache', de: 'L1 + L2 Cache' },
+        lbl: { en: 'Mem · Redis · Mongo', de: 'Mem · Redis · Mongo' },
+      },
     ],
     stack: [
-      'TypeScript 6.0',
-      'Node.js 20+',
+      'TypeScript 5.8',
+      'Node.js 22',
       'Discord.js v14',
       'Google Cloud Translation',
       'DeepL API',
@@ -439,14 +498,17 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     category: 'personal',
     title: 'zeN-UI & Capri CLI',
     role: {
-      en: 'Design System, WebGL Engine & Security Co-Pilot',
-      de: 'Design-System, WebGL-Engine & Security Co-Pilot',
+      en: 'Cross-Framework UI Library, WebGL Scene & CLI Security Linter',
+      de: 'Framework-übergreifende UI-Library, WebGL-Szene & CLI-Security-Linter',
     },
     statusPill: { en: 'Powers This Site', de: 'Basis dieser Seite' },
-    archPill: '51 Primitives · 8 Themes · Capri Guard',
+    archPill: {
+      en: '51 Components · 8 Themes · Capri CLI',
+      de: '51 Komponenten · 8 Themes · Capri CLI',
+    },
     subtitle: {
-      en: 'Cross-framework UI library (React 19, Angular 20+, Vue 3) with built-in SQLi/XSS/Prompt-Injection firewall',
-      de: 'Framework-übergreifende UI-Library (React 19, Angular 20+, Vue 3) mit integrierter SQLi/XSS/Prompt-Injection-Firewall',
+      en: 'Cross-framework UI library (React 19, Angular 20+, Vue 3) with Three.js canvas & CLI security linter',
+      de: 'Framework-übergreifende UI-Library (React 19, Angular 20+, Vue 3) mit Three.js-Szene & CLI-Security-Linter',
     },
     discipline: {
       en: 'React 19 · Angular 20+ · W3C Custom Elements · Three.js / R3F · GSAP · Web Audio · Capri CLI',
@@ -454,30 +516,42 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     },
     year: { en: 'OPEN SOURCE · NPM', de: 'OPEN SOURCE · NPM' },
     story: {
-      en: 'Instead of hand-coding cards, Three.js scenes, and audio synthesizers per project, I extracted @zen-ui/system as a reusable package with 51 UI primitives, 8 dark and light themes, 40 vector icons, and the Capri CLI security scanner that protects inputs against SQL/NoSQL injection, XSS, and prompt injection.',
-      de: 'Statt Karten, Three.js-Szenen und Audio-Synthesizer in jedem Projekt neu zu bauen, habe ich @zen-ui/system als eigenes Paket mit 51 UI-Komponenten, 8 Dark- und Light-Themes, 40 Vektor-Icons und dem Capri-Security-Scanner (Schutz vor SQL/NoSQL-Injection, XSS und Prompt-Injection) entwickelt.',
+      en: 'Instead of rebuilding cards, Three.js backgrounds, and audio controls for every project, I packaged @zen-ui/system with 51 UI components, 8 dark and light themes, 40 vector icons, and the Capri CLI security linter that checks inputs for SQL/NoSQL injection, XSS, and prompt-injection patterns.',
+      de: 'Statt Karten, Three.js-Hintergründe und Audio-Steuerung in jedem Projekt neu zu bauen, habe ich @zen-ui/system als eigenes Paket mit 51 UI-Komponenten, 8 Dark- und Light-Themes, 40 Vektor-Icons und dem Capri-CLI-Security-Linter (Prüfung auf SQL/NoSQL-Injection, XSS und Prompt-Injection-Muster) entwickelt.',
     },
     engineeringNote: {
-      en: 'Ships both native React 19 primitives and framework-agnostic W3C Custom Elements (<zen-icon>, <zen-theme-switcher>) plus the zero-runtime npx capri CLI for automated architecture docs and security audits.',
-      de: 'Liefert sowohl React-19-Komponenten als auch W3C Custom Elements (<zen-icon>, <zen-theme-switcher>) für Angular 20+, Vue 3 und Svelte 5 sowie die npx capri CLI für Architektur-Dokumentation und Security-Audits.',
+      en: 'Ships both native React 19 components and framework-agnostic W3C Custom Elements (<zen-icon>, <zen-theme-switcher>) plus the npx capri CLI for architecture checks and client-side input sanitization.',
+      de: 'Liefert sowohl React-19-Komponenten als auch W3C Custom Elements (<zen-icon>, <zen-theme-switcher>) für Angular 20+, Vue 3 und Svelte 5 sowie die npx capri CLI für Architektur-Checks und Input-Validierung.',
     },
     highlights: {
       en: [
-        '51 components & 8 dark/light themes with semantic CSS tokens and 60fps spring physics',
-        'Real-time input firewall blocking SQL/NoSQL injection, XSS, and LLM prompt injection',
-        'Procedural Web Audio synthesizer, GSAP motion, and RK4 Three-Body WebGL cosmos canvas included',
+        '51 UI components & 8 dark/light themes with CSS custom properties and 60fps spring animations',
+        'Client-side input sanitizer & CLI security linter (capri-guard) detecting SQL/NoSQL injection, XSS, and prompt injection patterns',
+        'Procedural Web Audio synthesizer, GSAP motion utilities, and interactive Three.js orbital background included',
       ],
       de: [
-        '51 Komponenten & 8 Dark-/Light-Themes mit semantischen CSS-Variablen und 60fps-Animationen',
-        'Echtzeit-Input-Firewall gegen SQL/NoSQL-Injection, XSS und LLM-Prompt-Injection',
-        'Prozeduraler Web-Audio-Synthesizer, GSAP-Animationen und RK4-Three-Body-WebGL-Szene direkt integriert',
+        '51 UI-Komponenten & 8 Dark-/Light-Themes mit semantischen CSS-Variablen und 60fps-Animationen',
+        'Clientseitige Input-Prüfung & CLI-Security-Linter (capri-guard) zur Erkennung von SQL/NoSQL-Injection-, XSS- und Prompt-Injection-Mustern',
+        'Prozeduraler Web-Audio-Synthesizer, GSAP-Animationen und interaktiver Three.js-Hintergrund direkt integriert',
       ],
     },
     metrics: [
-      { val: '51 Modules', lbl: 'React + Web Comp' },
-      { val: '8 Themes', lbl: '4 Dark + 4 Light' },
-      { val: '40 Icons', lbl: 'Zero-Dep SVG' },
-      { val: 'Capri Guard', lbl: 'SQLi/XSS/Prompt' },
+      {
+        val: { en: '51 Components', de: '51 Komponenten' },
+        lbl: { en: 'React + Web Comp', de: 'React + Web Comp' },
+      },
+      {
+        val: { en: '8 Themes', de: '8 Themes' },
+        lbl: { en: '4 Dark + 4 Light', de: '4 Dark + 4 Light' },
+      },
+      {
+        val: { en: '40 Icons', de: '40 Icons' },
+        lbl: { en: 'Zero-Dep SVG', de: 'Zero-Dep SVG' },
+      },
+      {
+        val: { en: 'capri-guard', de: 'capri-guard' },
+        lbl: { en: 'Security Linter', de: 'Security-Linter' },
+      },
     ],
     stack: [
       'TypeScript 5.8',
@@ -507,10 +581,13 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       de: 'PowerShell-, Windows-Terminal- & CMD-Theme-Engine',
     },
     statusPill: { en: 'Live Workbench', de: 'Live-Workbench' },
-    archPill: 'PWSH · Windows Terminal · HLSL Shader',
+    archPill: {
+      en: 'PWSH · Windows Terminal · HLSL Shader',
+      de: 'PWSH · Windows Terminal · HLSL-Shader',
+    },
     subtitle: {
-      en: 'Brings all 8 @zen-ui/system themes, HLSL CRT shaders, and the Capri Guard CLI firewall into PowerShell, Windows Terminal & CMD',
-      de: 'Bringt alle 8 @zen-ui/system-Themes, HLSL-CRT-Shader und die Capri-Guard-CLI-Firewall in PowerShell, Windows Terminal & CMD',
+      en: 'Brings all 8 @zen-ui/system themes, HLSL CRT shaders, and PSReadLine safety checks into PowerShell, Windows Terminal & CMD',
+      de: 'Bringt alle 8 @zen-ui/system-Themes, HLSL-CRT-Shader und PSReadLine-Sicherheitschecks in PowerShell, Windows Terminal & CMD',
     },
     discipline: {
       en: 'PowerShell 7 · Windows Terminal · CMD · Direct3D HLSL Shader · ANSI TrueColor · React 19 Workbench',
@@ -518,30 +595,42 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     },
     year: { en: 'SIDE PROJECT · CLI', de: 'HOBBY · CLI' },
     story: {
-      en: 'I wanted my local PowerShell prompt, PSReadLine syntax highlighting, CMD shell, and Windows Terminal color schemes to match my web projects. zeN-Terminal switches all of them at once—including procedural 1080p wallpapers and an optional Direct3D HLSL CRT pixel shader—and provides an interactive web workbench at terminal.lpabst.dev.',
-      de: 'Ich wollte meinen lokalen PowerShell-Prompt, das PSReadLine-Syntax-Highlighting, CMD und mein Windows-Terminal-Farbschema an meine Web-Projekte anpassen. Mit zeN-Terminal schalte ich alles gleichzeitig per zen-theme-Befehl um – inklusive prozeduraler 1080p-Wallpapers, optionalem Direct3D-HLSL-CRT-Shader und interaktiver Web-Workbench.',
+      en: 'I wanted my local PowerShell prompt, PSReadLine syntax highlighting, CMD shell, and Windows Terminal color schemes to match my web projects. zeN-Terminal switches all of them at once—including procedural 1080p wallpapers and an optional Direct3D HLSL CRT pixel shader—and provides an interactive web catalog at terminal.lpabst.dev.',
+      de: 'Ich wollte meinen lokalen PowerShell-Prompt, das PSReadLine-Syntax-Highlighting, CMD und mein Windows-Terminal-Farbschema an meine Web-Projekte anpassen. Mit zeN-Terminal schalte ich alles gleichzeitig per zen-theme-Befehl um – inklusive prozeduraler 1080p-Wallpapers, optionalem Direct3D-HLSL-CRT-Shader und interaktivem Web-Katalog.',
     },
     engineeringNote: {
-      en: 'The PowerShell installer backs up your existing $PROFILE and Windows Terminal settings.json, injects 24-bit TrueColor ANSI prompt hooks, PSReadLine token colors, and CMD AutoRun hooks, and registers the capri-guard command for real-time Enter-key SQLi/XSS/Prompt-Injection interception.',
-      de: 'Der PowerShell-Installer legt vorab Backups von $PROFILE und der Windows-Terminal-settings.json an, richtet 24-Bit-TrueColor-ANSI-Prompts, PSReadLine-Farben und CMD-AutoRun-Hooks ein und stellt capri-guard für Echtzeit-Checks bei jedem Enter-Tastendruck bereit.',
+      en: 'The PowerShell installer backs up your existing $PROFILE and Windows Terminal settings.json, configures 24-bit TrueColor ANSI prompts, PSReadLine token colors, and CMD AutoRun hooks, and registers a PSReadLine Enter-key handler (capri-guard) that warns before executing suspicious shell strings.',
+      de: 'Der PowerShell-Installer legt vorab Backups von $PROFILE und der Windows-Terminal-settings.json an, richtet 24-Bit-TrueColor-ANSI-Prompts, PSReadLine-Farben und CMD-AutoRun-Hooks ein und registriert einen PSReadLine-Enter-Handler (capri-guard), der vor verdächtigen Befehlen warnt.',
     },
     highlights: {
       en: [
         'One-command PowerShell, CMD & Windows Terminal theme switching across all 8 @zen-ui/system palettes',
         'Full-screen in-terminal TUI workbench (zen-ui), procedural 1080p wallpapers, and Direct3D HLSL CRT scanline pixel shader',
-        'Real-time Enter-key CLI firewall (capri-guard) scanning shell strings for SQLi, XSS, and prompt injection',
+        'PSReadLine Enter-key safety check (capri-guard) inspecting shell inputs for SQLi, XSS, and prompt-injection patterns',
       ],
       de: [
         'Wechsel des PowerShell-, CMD- und Windows-Terminal-Themes über alle 8 @zen-ui/system-Paletten mit einem Befehl',
         'Interaktive Vollbild-TUI im Terminal (zen-ui), prozedurale 1080p-Wallpapers und Direct3D-HLSL-CRT-Pixel-Shader',
-        'Echtzeit-CLI-Firewall (capri-guard) zum Prüfen von Befehlen auf SQLi, XSS und Prompt-Injection direkt beim Tippen',
+        'PSReadLine-Sicherheitscheck beim Drücken von Enter (capri-guard) zum Prüfen von Befehlen auf SQLi-, XSS- und Prompt-Injection-Muster',
       ],
     },
     metrics: [
-      { val: '8 Themes', lbl: '24-Bit TrueColor' },
-      { val: '3 Shells', lbl: 'PWSH / WT / CMD' },
-      { val: 'HLSL Shader', lbl: 'Direct3D CRT' },
-      { val: 'capri-guard', lbl: 'CLI Firewall' },
+      {
+        val: { en: '8 Themes', de: '8 Themes' },
+        lbl: { en: '24-Bit TrueColor', de: '24-Bit TrueColor' },
+      },
+      {
+        val: { en: '3 Shells', de: '3 Shells' },
+        lbl: { en: 'PWSH / WT / CMD', de: 'PWSH / WT / CMD' },
+      },
+      {
+        val: { en: 'HLSL Shader', de: 'HLSL-Shader' },
+        lbl: { en: 'Direct3D CRT', de: 'Direct3D CRT' },
+      },
+      {
+        val: { en: 'capri-guard', de: 'capri-guard' },
+        lbl: { en: 'PSReadLine Check', de: 'PSReadLine-Check' },
+      },
     ],
     stack: [
       'PowerShell 7',
