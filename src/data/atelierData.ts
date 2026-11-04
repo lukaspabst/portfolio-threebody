@@ -526,8 +526,8 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     },
     year: { en: 'OPEN SOURCE · NPM', de: 'OPEN SOURCE · NPM' },
     story: {
-      en: 'Instead of rebuilding cards, Three.js backgrounds, and audio controls for every project, I packaged @zen-ui/system with 51 UI components, 8 dark and light themes, 40 vector icons, and the Capri CLI security linter that checks inputs for SQL/NoSQL injection, XSS, and prompt-injection patterns.',
-      de: 'Statt Karten, Three.js-Hintergründe und Audio-Steuerung in jedem Projekt neu zu bauen, habe ich @zen-ui/system als eigenes Paket mit 51 UI-Komponenten, 8 Dark- und Light-Themes, 40 Vektor-Icons und dem Capri-CLI-Security-Linter (Prüfung auf SQL/NoSQL-Injection, XSS und Prompt-Injection-Muster) entwickelt.',
+      en: 'Instead of rebuilding cards, Three.js backgrounds, and audio controls for every project, I packaged @zen-ui-capri/system with 51 UI components, 8 dark and light themes, 40 vector icons, and the Capri CLI security linter that checks inputs for SQL/NoSQL injection, XSS, and prompt-injection patterns.',
+      de: 'Statt Karten, Three.js-Hintergründe und Audio-Steuerung in jedem Projekt neu zu bauen, habe ich @zen-ui-capri/system als eigenes Paket mit 51 UI-Komponenten, 8 Dark- und Light-Themes, 40 Vektor-Icons und dem Capri-CLI-Security-Linter (Prüfung auf SQL/NoSQL-Injection, XSS und Prompt-Injection-Muster) entwickelt.',
     },
     engineeringNote: {
       en: 'Ships both native React 19 components and framework-agnostic W3C Custom Elements (<zen-icon>, <zen-theme-switcher>) plus the npx capri CLI for architecture checks and client-side input sanitization.',
@@ -596,8 +596,8 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       de: 'PWSH · Windows Terminal · HLSL-Shader',
     },
     subtitle: {
-      en: 'Brings all 8 @zen-ui/system themes, HLSL CRT shaders, and PSReadLine safety checks into PowerShell, Windows Terminal & CMD',
-      de: 'Bringt alle 8 @zen-ui/system-Themes, HLSL-CRT-Shader und PSReadLine-Sicherheitschecks in PowerShell, Windows Terminal & CMD',
+      en: 'Brings all 8 @zen-ui-capri/system themes, HLSL CRT shaders, and PSReadLine safety checks into PowerShell, Windows Terminal & CMD',
+      de: 'Bringt alle 8 @zen-ui-capri/system-Themes, HLSL-CRT-Shader und PSReadLine-Sicherheitschecks in PowerShell, Windows Terminal & CMD',
     },
     discipline: {
       en: 'PowerShell 7 · Windows Terminal · CMD · Direct3D HLSL Shader · ANSI TrueColor · React 19 Workbench',
@@ -614,12 +614,12 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
     },
     highlights: {
       en: [
-        'One-command PowerShell, CMD & Windows Terminal theme switching across all 8 @zen-ui/system palettes',
+        'One-command PowerShell, CMD & Windows Terminal theme switching across all 8 @zen-ui-capri/system palettes',
         'Full-screen in-terminal TUI workbench (zen-ui), procedural 1080p wallpapers, and Direct3D HLSL CRT scanline pixel shader',
         'PSReadLine Enter-key safety check (capri-guard) inspecting shell inputs for SQLi, XSS, and prompt-injection patterns',
       ],
       de: [
-        'Wechsel des PowerShell-, CMD- und Windows-Terminal-Themes über alle 8 @zen-ui/system-Paletten mit einem Befehl',
+        'Wechsel des PowerShell-, CMD- und Windows-Terminal-Themes über alle 8 @zen-ui-capri/system-Paletten mit einem Befehl',
         'Interaktive Vollbild-TUI im Terminal (zen-ui), prozedurale 1080p-Wallpapers und Direct3D-HLSL-CRT-Pixel-Shader',
         'PSReadLine-Sicherheitscheck beim Drücken von Enter (capri-guard) zum Prüfen von Befehlen auf SQLi-, XSS- und Prompt-Injection-Muster',
       ],
@@ -649,7 +649,7 @@ export const ATELIER_WORKS: readonly AtelierWork[] = [
       'CMD AutoRun',
       'Direct3D HLSL Shader',
       '24-Bit ANSI TrueColor',
-      '@zen-ui/system',
+      '@zen-ui-capri/system',
       'React 19',
       'Three.js / R3F',
       'TypeScript 5.8',
