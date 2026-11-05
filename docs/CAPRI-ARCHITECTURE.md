@@ -3,12 +3,12 @@ project: "portfolio"
 version: "1.0.0"
 files: 6
 loc: 1500
-tags: [capri-docu, architecture, ideaprojects]
+tags: [capri-docu, architecture]
 ---
 # portfolio // CAPRI Architecture & AI Context Dossier
 > **Executive Summary:** Interactive 3D Creative Developer Portfolio (`https://lpabst.dev`) built with React 19, Three.js / R3F Three-Body orbital physics, GSAP ScrollTrigger, and `@zen-ui-capri/system`.
 >
-> *Generated automatically via `npx capri docu` (Zero build or browser runtime overhead) · Linked to [[000-Master-Workspace-Index]]*
+> *Generated automatically via `npx capri docu` (Zero build or browser runtime overhead)*
 
 ## 1. Project Identity & Stack Overview
 - **Repository:** `portfolio` (`lukas-pabst-portfolio`)
@@ -59,4 +59,4 @@ flowchart TD
 - **Subroutine `architect` (`SCS // ARCHITECT`):** Enforce strict typing (zero `any`, `readonly T[]`), modular files (`< 900` lines), and `--zen-*` CSS tokens.
 - **Subroutine `guard` (`CYBERPSYCHOSIS // GUARD`):** Sanitize untrusted inputs (`capri.sanitizeForPrompt()`), prevent XSS/secret leaks, bind dropdowns to `onMouseDown`, and ensure zero horizontal overflow (`320px` to `4K`).
 - **Subroutine `zen` (`THEME // MATRIX`):** Maintain 4 Dark + 4 Light themes (`>= 4.5:1` AA contrast) and 60fps `--zen-ease-spring` tactile motion.
-- **Subroutine `docu` (`CAPRI // AUTO-DOCU`):** Re-run `npm run capri -- docu --workspace "C:\Users\Lukas\IdeaProjects" --write` whenever architectural boundaries or modules change.
+- **Subroutine `docu` (`CAPRI // AUTO-DOCU`):** Run `npx capri docu --write` whenever architectural boundaries or modules change.
