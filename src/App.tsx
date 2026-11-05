@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useMemo, Suspense } from 'react';
 import gsap from 'gsap';
 import {
-  ZenCosmosCanvas,
   ZenNavbar,
   ZenHeading,
   ZenCard,
@@ -17,6 +16,7 @@ import {
   useZenAudioSynth,
   type ZenDossierItem,
 } from '@zen-ui-capri/system';
+import { ZenCosmosCanvas } from './cosmos';
 import {
   ATELIER_PROFILE,
   ATELIER_WORKS,
